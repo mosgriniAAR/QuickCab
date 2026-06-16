@@ -930,7 +930,9 @@
                 }
             }
 
-            if (document.getElementById('adminContentView').style.display === 'block') {
+            const adminOpen = document.getElementById('adminContentView').style.display === 'block';
+            console.log(`   → Admin panel open: ${adminOpen} → ${adminOpen ? 'refreshing dashboard' : 'data cached'}`);
+            if (adminOpen) {
                 renderHqDashboardGrid();
             }
             refreshAdminDatabaseStats();
