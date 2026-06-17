@@ -785,8 +785,84 @@
                     </div>
 
                     <div style="margin-top: 20px;">
-                        <label><strong>📝 נימוק איכות ומערכת חובה (ISO 9001 - לפחות 10 תווים):</strong></label>
-                        <textarea id="teamCrisisJustificationInput" class="input-control" rows="3" placeholder="נמקו מדוע בחרתם בדרך פעולה זו וכיצד היא מגנה על מדדי הארגון..."></textarea>
+                        <div style="background: linear-gradient(135deg, #f8f9ff 0%, #e8f4ff 100%); padding: 18px; border-radius: 12px; border: 2px solid #4a90e2;">
+                            <h4 style="color: #2c5aa0; margin: 0 0 15px 0;">📋 תהליך CAPA (Corrective &amp; Preventive Action)</h4>
+
+                            <!-- שלב 1: זיהוי וסיווג -->
+                            <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-right: 4px solid #ff6b6b;">
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">🔍 1. זיהוי וסיווג הבעיה</label>
+                                <select id="capaClassification" class="input-control" style="margin-bottom: 8px;">
+                                    <option value="">-- בחרו סוג הבעיה --</option>
+                                    <option value="conceptual">טעות קונספטואלית (אסטרטגיה שגויה)</option>
+                                    <option value="calculation">טעות חישובית (נתונים שגויים)</option>
+                                    <option value="process">כשל תהליכי (תקלה במערכת)</option>
+                                    <option value="human">טעות אנוש (החלטה לא נכונה)</option>
+                                    <option value="external">גורם חיצוני (שוק, מתחרים)</option>
+                                </select>
+                                <input type="text" id="capaDescription" class="input-control" placeholder="תיאור קצר של הבעיה (לדוגמה: 'לקוחות עוזבים בגלל מחירים גבוהים')" style="font-size: 0.9rem;">
+                            </div>
+
+                            <!-- שלב 2: ניתוח סיכון -->
+                            <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-right: 4px solid #ffa502;">
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">⚠️ 2. ניתוח סיכון (חומרה × הסתברות)</label>
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                                    <div>
+                                        <label style="font-size: 0.85rem; color: #555;">חומרת הנזק:</label>
+                                        <select id="capaSeverity" class="input-control" onchange="updateCapaRisk()">
+                                            <option value="">-- בחרו --</option>
+                                            <option value="1">1 - נמוכה (השפעה קטנה)</option>
+                                            <option value="2">2 - בינונית (פגיעה ב-KPI אחד)</option>
+                                            <option value="3">3 - גבוהה (פגיעה במספר KPI)</option>
+                                            <option value="4">4 - קריטית (סכנה לחברה)</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label style="font-size: 0.85rem; color: #555;">הסתברות להישנות:</label>
+                                        <select id="capaProbability" class="input-control" onchange="updateCapaRisk()">
+                                            <option value="">-- בחרו --</option>
+                                            <option value="1">1 - נדירה (פעם בשנה)</option>
+                                            <option value="2">2 - נמוכה (פעם ברבעון)</option>
+                                            <option value="3">3 - בינונית (פעם בחודש)</option>
+                                            <option value="4">4 - גבוהה (שבועי/יומי)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="riskScore" style="margin-top: 10px; padding: 8px; border-radius: 6px; text-align: center; font-weight: bold; display: none;">
+                                    רמת סיכון: <span id="riskValue"></span>
+                                </div>
+                            </div>
+
+                            <!-- שלב 3: פעולה מיידית -->
+                            <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-right: 4px solid #26de81;">
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">🛡️ 3. פעולה מיידית (Containment) - בלימת הנזק</label>
+                                <textarea id="capaContainment" class="input-control" rows="2" placeholder="מה תעשו עכשיו כדי לעצור את הנזק? (לדוגמה: 'נשלח הודעת התנצלות מיידית ללקוחות')"></textarea>
+                            </div>
+
+                            <!-- שלב 4: פעולה מתקנת -->
+                            <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-right: 4px solid #4834d4;">
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">🔧 4. פעולה מתקנת (Root Cause Action) - מניעת הישנות</label>
+                                <textarea id="capaCorrectiveAction" class="input-control" rows="2" placeholder="מה תשנו במערכת כדי שזה לא יקרה שוב? (לדוגמה: 'נטמיע מערכת ניטור מחירים אוטומטית')"></textarea>
+                            </div>
+
+                            <!-- שלב 5: סעיפי ISO -->
+                            <div style="background: white; padding: 12px; border-radius: 8px; border-right: 4px solid #0984e3;">
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">📜 5. התייחסות לסעיפי ISO 9001:2015</label>
+                                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-bottom: 10px;">
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="5.1"> <span>5.1 - מנהיגות ומחויבות</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="6.1"> <span>6.1 - ניהול סיכונים</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="8.1"> <span>8.1 - תכנון תפעולי</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="8.5"> <span>8.5 - שליטה בייצור</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="9.1"> <span>9.1 - ניטור ומדידה</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="9.3"> <span>9.3 - סקירת הנהלה</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="10.1"> <span>10.1 - אי-התאמה ופעולה מתקנת</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="10.2"> <span>10.2 - שיפור מתמיד</span></label>
+                                </div>
+                                <textarea id="capaIsoJustification" class="input-control" rows="2" placeholder="הסבירו כיצד ההחלטה מיישמת את הסעיפים שבחרתם (לדוגמה: 'לפי סעיף 10.1, אנו מנתחים את שורש הבעיה...')"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- שדה מוסתר: מרכז את כל נתוני CAPA לנימוק אחד לצורך שמירה -->
+                        <textarea id="teamCrisisJustificationInput" style="display:none;"></textarea>
                     </div>
 
                     <button class="btn btn-success" style="width: 100%; margin-top: 20px; font-size: 1.1rem;" onclick="submitTeamActiveDecision()">🎯 אשר ובצע החלטה ניהולית</button>
@@ -1210,6 +1286,52 @@
                         📍 <strong>טווח ארוך (חודש 2):</strong> נטמיע תהליך ביקורת שבועי של ביצועי המערכת ונתקן בעיות תוך 24 שעות.<br><br>
 
                         📍 <strong>בקרה:</strong> נפיק דוח יומי של אחוזי SLA ונקיים פגישת צוות שבועית לניתוח חריגות."
+                    </div>
+                </div>
+            </div>
+
+            <div class="guidelines-subsection">
+                <h4>🔧 תהליך CAPA — איך לנמק החלטה במהלך משבר</h4>
+                <p>
+                    כשתגיבו למשבר בחדר המצב, הנימוק שלכם צריך לעקוב אחר תהליך <strong>CAPA</strong>
+                    (Corrective And Preventive Action) — תהליך הפעולה המתקנת והמונעת של ISO 9001.
+                    ארבעת השלבים, וההפניה לסעיף הרלוונטי בתקן:
+                </p>
+                <table class="guidelines-table">
+                    <tr>
+                        <th>שלב</th>
+                        <th>מה עושים</th>
+                        <th>סעיף ISO 9001:2015</th>
+                    </tr>
+                    <tr>
+                        <td><strong>1. זיהוי וסיווג</strong></td>
+                        <td>האם מדובר בטעות קונספטואלית או חישובית? סיווג אי-ההתאמה</td>
+                        <td><strong>10.2.1</strong> — אי-התאמה (Nonconformity)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. ניתוח סיכון</strong></td>
+                        <td>הערכת חומרה והסתברות של הבעיה</td>
+                        <td><strong>6.1</strong> — חשיבה מבוססת סיכונים</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. פעולה מיידית</strong></td>
+                        <td>בלימת הנזק (Containment) — עצירת ההתפשטות</td>
+                        <td><strong>8.7</strong> — בקרת תפוקות לא-תואמות</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. פעולה מתקנת</strong></td>
+                        <td>שינוי המערכת למניעת הישנות (Root Cause Action)</td>
+                        <td><strong>10.2</strong> — פעולה מתקנת</td>
+                    </tr>
+                </table>
+
+                <div class="guidelines-demo">
+                    <h5>✅ דוגמה לנימוק לפי CAPA:</h5>
+                    <div class="guidelines-demo-box">
+                        <strong>1) זיהוי וסיווג:</strong> טעות תהליכית — האלגוריתם שידך נהגים שגוי (אי-התאמה תפעולית, סעיף 10.2.1).<br>
+                        <strong>2) ניתוח סיכון:</strong> חומרה גבוהה (פגיעה ב-SLA), הסתברות גבוהה אם לא נטפל (סעיף 6.1).<br>
+                        <strong>3) פעולה מיידית:</strong> מעבר לניתוב ידני כדי לבלום את הנזק לנוסעים (סעיף 8.7).<br>
+                        <strong>4) פעולה מתקנת:</strong> הטמעת בדיקת גרסאות לפני עלייה לאוויר, למניעת הישנות (סעיף 10.2).
                     </div>
                 </div>
             </div>
@@ -2512,6 +2634,9 @@ window.toggleFaqItem = function(element) {
             document.getElementById('openOptionText').value = '';
             document.getElementById('openOptionFields').style.display = 'none';
 
+            // אתחול טופס CAPA
+            resetCapaForm();
+
             // בניית בוררי השפעה לכל מדד של הצוות
             const labels = { satisfaction: "שביעות רצון", sla: "SLA", profitability: "רווחיות", morale: "מורל", cyber: "אבטחה" };
             const grid = document.getElementById('openOptionImpactGrid');
@@ -2538,6 +2663,60 @@ window.toggleFaqItem = function(element) {
     }
 
     // הצגה/הסתרה של שדות החלופה הפתוחה לפי הבחירה
+    // ===== טופס CAPA =====
+    function updateCapaRisk() {
+        const sev = parseInt(document.getElementById('capaSeverity').value) || 0;
+        const prob = parseInt(document.getElementById('capaProbability').value) || 0;
+        const box = document.getElementById('riskScore');
+        const val = document.getElementById('riskValue');
+        if (sev && prob) {
+            const score = sev * prob;
+            let level, color;
+            if (score <= 3) { level = `נמוך (${score})`; color = '#d1fae5'; }
+            else if (score <= 7) { level = `בינוני (${score})`; color = '#fff3cd'; }
+            else if (score <= 11) { level = `גבוה (${score})`; color = '#ffe0b2'; }
+            else { level = `קריטי (${score})`; color = '#ffcdd2'; }
+            val.innerText = level;
+            box.style.background = color;
+            box.style.display = 'block';
+        } else {
+            box.style.display = 'none';
+        }
+    }
+
+    function resetCapaForm() {
+        ['capaClassification','capaDescription','capaSeverity','capaProbability','capaContainment','capaCorrectiveAction','capaIsoJustification'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.value = '';
+        });
+        document.querySelectorAll('.iso-clause-checkbox').forEach(cb => cb.checked = false);
+        const rs = document.getElementById('riskScore');
+        if (rs) rs.style.display = 'none';
+    }
+
+    // אוסף ומאמת את שדות CAPA. מחזיר מחרוזת נימוק, או null אם חסר משהו
+    function gatherCapaJustification() {
+        const classMap = { conceptual:"טעות קונספטואלית", calculation:"טעות חישובית", process:"כשל תהליכי", human:"טעות אנוש", external:"גורם חיצוני" };
+        const cls = document.getElementById('capaClassification').value;
+        const desc = document.getElementById('capaDescription').value.trim();
+        const sev = document.getElementById('capaSeverity').value;
+        const prob = document.getElementById('capaProbability').value;
+        const cont = document.getElementById('capaContainment').value.trim();
+        const corr = document.getElementById('capaCorrectiveAction').value.trim();
+        const isoText = document.getElementById('capaIsoJustification').value.trim();
+        const clauses = Array.from(document.querySelectorAll('.iso-clause-checkbox:checked')).map(c => c.value);
+
+        if (!cls || !desc || !sev || !prob || !cont || !corr || clauses.length === 0 || !isoText) {
+            return null;
+        }
+        const score = parseInt(sev) * parseInt(prob);
+        return `🔍 זיהוי: ${classMap[cls]} — ${desc}\n` +
+               `⚠️ סיכון: חומרה ${sev} × הסתברות ${prob} = ${score}\n` +
+               `🛡️ פעולה מיידית: ${cont}\n` +
+               `🔧 פעולה מתקנת: ${corr}\n` +
+               `📜 סעיפי ISO: ${clauses.join(', ')} — ${isoText}`;
+    }
+
     function onCrisisOptionChange() {
         const checked = document.querySelector('input[name="crisisOptionSelectGroup"]:checked');
         const isOpen = checked && checked.value === 'E';
@@ -2574,12 +2753,19 @@ window.toggleFaqItem = function(element) {
 
     async function submitTeamActiveDecision() {
         const checked = document.querySelector('input[name="crisisOptionSelectGroup"]:checked');
-        const just = document.getElementById('teamCrisisJustificationInput').value.trim();
 
-        if(!checked || just.length < 10) { 
-            showSystemNotification("חוסר בנתונים", "יש לבחור חלופת פעולה ולהזין נימוק של לפחות 10 תווים!", true); 
-            return; 
+        if(!checked) {
+            showSystemNotification("חוסר בנתונים", "יש לבחור חלופת פעולה!", true);
+            return;
         }
+
+        // איסוף ואימות טופס CAPA — חובה למלא את כל השלבים
+        const just = gatherCapaJustification();
+        if (!just) {
+            showSystemNotification("טופס CAPA חסר", "יש להשלים את כל 5 שלבי תהליך ה-CAPA לפני שליחת ההחלטה (כולל בחירת סעיף ISO אחד לפחות).", true);
+            return;
+        }
+        document.getElementById('teamCrisisJustificationInput').value = just;
 
         let choiceId = checked.value;
         let optObj;
@@ -2621,6 +2807,7 @@ window.toggleFaqItem = function(element) {
         teamState.history.push({ title: activeCrisis.title, choice: choiceLabel, text: just });
         activeCrisis = null;
         document.getElementById('teamCrisisJustificationInput').value = '';
+        resetCapaForm();
         document.getElementById('openOptionText').value = '';
         document.getElementById('openOptionFields').style.display = 'none';
         document.getElementById('teamNoCrisisView').style.display = 'block';
@@ -3172,6 +3359,7 @@ window.toggleFaqItem = function(element) {
     window.validateAndStartGame = validateAndStartGame;
     window.submitTeamActiveDecision = submitTeamActiveDecision;
     window.onCrisisOptionChange = onCrisisOptionChange;
+    window.updateCapaRisk = updateCapaRisk;
     window.resetTeamViewToSetup = resetTeamViewToSetup;
     window.renderHqDashboardGrid = renderHqDashboardGrid;
     window.exportToCSVReport = exportToCSVReport;
