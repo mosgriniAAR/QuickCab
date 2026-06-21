@@ -188,6 +188,8 @@
         .btn-danger { background-color: var(--red-danger); color: white; }
         .btn-danger:hover { background-color: #c0392b; }
         .btn-secondary { background-color: #95a5a6; color: white; }
+        .btn-info { background-color: #0ea5e9; color: white; }
+        .btn-info:hover { background-color: #0284c7; }
 
         .view-panel { background: white; padding: 30px; border-radius: 16px; box-shadow: var(--shadow); display: none; }
         .view-panel.active { display: block; }
@@ -729,6 +731,55 @@
         .dropdown:hover .dropdown-content {
             display: block;
         }
+
+        /* ===== Wizard הנחיות ===== */
+        .wiz-progress { display:flex; align-items:center; justify-content:center; gap:6px; margin-bottom:30px; flex-wrap:wrap; }
+        .wiz-step { display:flex; align-items:center; gap:8px; color:#94a3b8; font-weight:bold; font-size:0.95rem; transition:color 0.3s; }
+        .wiz-step .wiz-dot { width:32px; height:32px; border-radius:50%; background:#e2e8f0; color:#94a3b8; display:flex; align-items:center; justify-content:center; font-size:0.95rem; transition:all 0.3s; }
+        .wiz-step.active { color:var(--dark-blue); }
+        .wiz-step.active .wiz-dot { background:var(--taxi-yellow); color:var(--dark-blue); transform:scale(1.1); }
+        .wiz-step.done .wiz-dot { background:var(--green-success); color:white; }
+        .wiz-line { width:40px; height:3px; background:#e2e8f0; border-radius:2px; }
+        @media (max-width:700px) { .wiz-line { width:16px; } .wiz-step { font-size:0.78rem; } }
+
+        .wiz-screen { display:none; animation:wizFade 0.4s ease; }
+        .wiz-screen.active { display:block; }
+        @keyframes wizFade { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+        .wiz-title { text-align:center; color:var(--dark-blue); font-size:1.8rem; margin-bottom:25px; border:none; }
+
+        .wiz-cards-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+        @media (max-width:768px) { .wiz-cards-3 { grid-template-columns:1fr; } }
+        .wiz-card { background:white; border-radius:14px; padding:28px 22px; text-align:center; box-shadow:var(--shadow); border-top:5px solid var(--blue-info); }
+        .wiz-card .wiz-icon { font-size:3rem; margin-bottom:12px; }
+        .wiz-card h3 { border:none; color:var(--dark-blue); margin:0 0 10px 0; }
+        .wiz-card p { color:var(--slate); margin:0; line-height:1.5; }
+
+        .wiz-flow { display:flex; flex-direction:column; align-items:center; gap:4px; max-width:420px; margin:0 auto; }
+        .wiz-flow-item { display:flex; align-items:center; gap:14px; background:white; border-radius:12px; padding:14px 22px; box-shadow:var(--shadow); width:100%; box-sizing:border-box; }
+        .wiz-flow-num { width:34px; height:34px; border-radius:50%; background:var(--taxi-yellow); color:var(--dark-blue); font-weight:bold; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+        .wiz-flow-icon { font-size:1.6rem; }
+        .wiz-flow-item span { font-weight:bold; color:var(--dark-blue); font-size:1.05rem; }
+        .wiz-flow-arrow { color:var(--taxi-yellow); font-size:1.4rem; font-weight:bold; }
+
+        .wiz-cards-4 { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+        @media (max-width:768px) { .wiz-cards-4 { grid-template-columns:repeat(2,1fr); } }
+        .wiz-flip { background:white; border-radius:14px; padding:22px 16px; text-align:center; box-shadow:var(--shadow); cursor:pointer; transition:transform 0.2s; border:2px solid transparent; }
+        .wiz-flip:hover { transform:translateY(-3px); border-color:var(--taxi-yellow); }
+        .wiz-flip .wiz-flip-icon { font-size:2.5rem; }
+        .wiz-flip h4 { color:var(--dark-blue); margin:10px 0 0 0; font-size:1.15rem; }
+        .wiz-flip-body { max-height:0; overflow:hidden; opacity:0; transition:all 0.3s; color:var(--slate); font-size:0.9rem; line-height:1.5; margin-top:0; }
+        .wiz-flip.open .wiz-flip-body { max-height:200px; opacity:1; margin-top:12px; }
+
+        .wiz-dodont { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        @media (max-width:768px) { .wiz-dodont { grid-template-columns:1fr; } }
+        .wiz-do, .wiz-dont { border-radius:14px; padding:24px; box-shadow:var(--shadow); }
+        .wiz-do { background:#f0fdf4; border:2px solid var(--green-success); }
+        .wiz-dont { background:#fef2f2; border:2px solid var(--red-danger); }
+        .wiz-do h3, .wiz-dont h3 { border:none; margin:0 0 14px 0; }
+        .wiz-do ul, .wiz-dont ul { margin:0; padding-right:20px; }
+        .wiz-do li, .wiz-dont li { padding:6px 0; font-size:1.05rem; color:var(--slate); }
+
+        .wiz-nav { display:flex; justify-content:space-between; align-items:center; margin-top:30px; }
     </style>
 </head>
 <body>
@@ -754,16 +805,11 @@
 
 <div class="container">
     <header>
-        <h1>🚖 חברת המוניות QuickCab</h1>
+        <h1 onclick="switchActiveTab('welcome')" style="cursor:pointer;" title="חזרה למסך הבית">🚖 חברת המוניות QuickCab</h1>
     </header>
 
-    <!-- שתי עמדות ראשיות בלבד. פאנל מנהל מוגן וקצר בשורה אחת -->
+    <!-- מצב דמו עצמאי: רק סביבת הלמידה, ללא כניסת מרצה/פאנל מנהל -->
     <div class="navigation-tabs">
-
-        <button class="btn btn-success"
-                onclick="switchActiveTab('welcome')">
-            🏠 ראשי
-        </button>
 
         <div class="dropdown">
             <button class="btn btn-primary">
@@ -771,10 +817,6 @@
             </button>
 
             <div class="dropdown-content">
-                <a onclick="switchActiveTab('team_station')">
-                    👥 עמדת עבודה צוותית
-                </a>
-
                 <a onclick="switchActiveTab('guidelines')">
                     📚 הנחיות המשחק
                 </a>
@@ -785,22 +827,17 @@
             </div>
         </div>
 
-        <div class="dropdown">
-            <button class="btn btn-danger">
-                🔒 מרצה ▼
-            </button>
+    </div>
 
-            <div class="dropdown-content">
-                <a onclick="switchActiveTab('presentation')">
-                    🖥️ מצגת תוצאות
-                </a>
-
-                <a onclick="switchActiveTab('admin_control')">
-                    🔐 פאנל מנהל
-                </a>
+    <!-- 🧭 פס מנחה וירטואלי — מלווה את המשתתף לאורך כל השלבים (מצב דמו) -->
+    <div id="demoGuideBanner" style="display:none; background:linear-gradient(135deg, #eef2ff, #e0e7ff); border:2px solid #818cf8; border-radius:14px; padding:16px 22px; margin-bottom:20px; box-shadow:var(--shadow);">
+        <div style="display:flex; align-items:flex-start; gap:14px;">
+            <div style="font-size:1.8rem; line-height:1;">🧭</div>
+            <div style="flex:1;">
+                <div id="demoGuideTitle" style="font-weight:800; color:#3730a3; font-size:1.05rem; margin-bottom:3px;">שלב נוכחי</div>
+                <div id="demoGuideText" style="color:#4338ca; font-size:0.95rem; line-height:1.5;">הנחיה תופיע כאן.</div>
             </div>
         </div>
-
     </div>
 
     <!-- ==================== 🏠 מסך פתיחה ==================== -->
@@ -818,16 +855,15 @@
                     <li>התמודדו עם אירועים בלתי צפויים</li>
                     <li>בהצלחה ושיהיה בהנאה!</li>
                 </ul>
-                <button class="welcome-cta" onclick="switchActiveTab('team_station')">🚀 התחלת הסימולציה</button>
+                <p style="margin-top:24px; color:#888; font-size:0.95rem;">👇 כדי להתחיל, פתחו את <strong>סביבת הלמידה → הנחיות המשחק</strong></p>
             </div>
 
             <div class="welcome-side">
                 <div class="welcome-side-head">איך מתחילים?</div>
                 <div class="welcome-side-body">
-                    <p>מומלץ לקרוא את ההנחיות לפני שמתחילים. כשאתם מוכנים — בחרו את הצוות שלכם והתחילו במשמרת.</p>
+                    <p>קודם עוברים על ההנחיות (סביבת הלמידה), ובסיומן ניתן לעבור לעמדת העבודה ולבחור צוות.</p>
                     <div class="welcome-shortcuts">
-                        <button class="welcome-shortcut" onclick="switchActiveTab('guidelines')">📚 קראו את הנחיות המשחק</button>
-                        <button class="welcome-shortcut" onclick="switchActiveTab('team_station')">👥 עברו לעמדת העבודה הצוותית</button>
+                        <button class="welcome-shortcut" onclick="switchActiveTab('guidelines')">📚 התחילו מהנחיות המשחק</button>
                     </div>
                 </div>
             </div>
@@ -836,6 +872,54 @@
 
     <!-- ==================== 👥 עמדת עבודה צוותית ==================== -->
     <div id="team_station_panel" class="view-panel">
+        <div style="text-align:center; margin-bottom:18px;">
+            <span class="round-indicator" style="display:inline-block; padding:8px 22px; border-radius:24px; font-weight:bold; font-size:1.05rem; background:#dbeafe; color:#1e40af;">🔵 סבב 1 — למידה</span>
+        </div>
+        <div id="round1ComparisonCard" style="display:none; background:#fffbeb; border:1px solid #fde68a; border-radius:12px; padding:16px 20px; margin-bottom:20px;">
+            <h3 style="border:none; margin:0 0 10px 0; color:var(--dark-blue);">📊 התוצאות שלכם בסבב 1 (נקודת ההשוואה)</h3>
+            <p style="color:#666; font-size:0.9rem; margin:0 0 12px 0;">המטרה בסבב 2: לשפר את המדדים האלה באמצעות אסטרטגיה חכמה יותר.</p>
+            <div id="round1KpiDisplay" style="display:grid; grid-template-columns:repeat(auto-fit, minmax(120px,1fr)); gap:10px;"></div>
+        </div>
+
+        <!-- ========== סבב 3: ניהול בעלי עניין (ISO 4.2) ========== -->
+        <div id="stakeholderRound" style="display:none;">
+            <div style="background:linear-gradient(135deg,#faf5ff,#f3e8ff); border:1px solid #e9d5ff; border-radius:12px; padding:20px; margin-bottom:20px;">
+                <h2 style="border:none; margin:0 0 8px 0; color:#6b21a8;">🤝 ניהול בעלי עניין (Stakeholder Management)</h2>
+                <p style="color:#666; margin:0; font-size:0.95rem;">בהתאם לתקן <strong>ISO 9001 סעיף 4.2</strong> — "הבנת הצרכים והציפיות של בעלי עניין". ארגון לא פועל בוואקום: עליכם למפות את בעלי העניין, להבין את ציפיותיהם, ולהשקיע נכון כדי לאזן בין אינטרסים מנוגדים.</p>
+            </div>
+
+            <!-- מפת השפעות -->
+            <div style="background:white; border-radius:12px; box-shadow:var(--shadow); padding:20px; margin-bottom:20px;">
+                <h3 style="color:var(--dark-blue);">🗺️ מפת השפעות — לכל בעל עניין: ציפייה ← פתרון</h3>
+                <div id="stakeholderTeamHead" style="background:#faf5ff; border-right:4px solid var(--purple-holder); padding:10px 14px; border-radius:8px; margin-bottom:12px; font-size:0.9rem; color:#444;"></div>
+                <p style="color:#666; font-size:0.9rem;">לכל "פתרון טוב" יש עלות תקציבית, ולכל בעלי העניין יחד היא עולה על התקציב הכולל — לא ניתן לטפל בכולם באותה רמה. תעדפו לפי מי שקריטי עבורכם, ובחרו במודע במאמץ מינימלי עבור האחרים.</p>
+                <div id="stakeholderMapGrid"></div>
+            </div>
+
+            <!-- תקציב בעלי עניין -->
+            <div style="background:white; border-radius:12px; box-shadow:var(--shadow); padding:20px; margin-bottom:20px;">
+                <h3 style="color:var(--dark-blue);">💰 כרטיסי השקעה חברתית (מאותו תקציב משותף)</h3>
+                <div id="stakeInvestList"></div>
+            </div>
+
+            <!-- תקציב משותף — מוצג ממש לפני ההגשה, כתזכורת אחרונה -->
+            <div style="background:#f1f5f9; padding:10px 16px; border-radius:20px; display:inline-block; font-weight:bold; margin-bottom:14px;">
+                💰 תקציב משותף שנותר (למפה ולהשקעות יחד): <span id="stakeBudgetUi">100</span> / 100 נק'
+            </div>
+            <br>
+            <button class="btn btn-success" style="width:100%; font-size:1.1rem;" onclick="submitStakeholderRound()">✅ הגש את אסטרטגיית בעלי העניין</button>
+            <div id="stakeholderResult" style="display:none; margin-top:20px; background:#f0fdf4; border:2px solid var(--green-success); border-radius:12px; padding:20px; text-align:center;"></div>
+
+            <!-- אירועי שרשרת בין-קבוצתיים (אינטראקציה חיה) -->
+            <div style="margin-top:24px;">
+                <h3 style="color:#c2410c; border-bottom:2px solid #fed7aa;">🔗 אירועי שרשרת — השפעות בין הקבוצות</h3>
+                <p style="color:#666; font-size:0.88rem;">כשצוות אחר מקבל החלטה שמשפיעה עליכם, היא תופיע כאן כאירוע לתגובה. כך מתבטאת התלות ההדדית בארגון.</p>
+                <div id="chainEventsArea">
+                    <div id="chainEmptyMsg" style="text-align:center; color:#aaa; padding:20px;">עדיין לא התקבלו אירועי שרשרת. הם יופיעו כשצוותים אחרים יקבלו החלטות.</div>
+                </div>
+            </div>
+        </div>
+
         <div id="teamSetupBlock">
             <h2>👥 שלב א': בחירת קבוצת עניין והגדרת זהות</h2>
             <p style="color: #666; margin-bottom: 20px;">בחרו את קבוצת העניין שלכם מתוך הרשימה הבאה כדי להתחיל בגיבוש האסטרטגיה:</p>
@@ -920,23 +1004,19 @@
             </div>
         </div>
 
-        <!-- מסך המתנה למנחה (אחרי נעילת אסטרטגיה) -->
+        <!-- מסך אחרי נעילת אסטרטגיה — מצב דמו: התחלה עצמאית -->
         <div id="teamWaitingBlock" style="display: none; text-align: center; padding: 50px 20px; background: #fffaf0; border: 2px dashed var(--taxi-yellow); border-radius: 12px; margin-top: 20px;">
             <div style="font-size: 4rem; margin-bottom: 15px;">⏳</div>
             <h2 style="color: var(--dark-blue);">האסטרטגיה ננעלה בהצלחה!</h2>
 
-            <!-- הודעת המתנה למנחה (מצב מקוון) -->
-            <div id="waitingOnlineMsg">
+            <!-- לא בשימוש במצב דמו, נשאר לתאימות -->
+            <div id="waitingOnlineMsg" style="display:none;">
                 <p style="font-size: 1.15rem; color: #555; margin-top: 12px;">ממתינים למנחה שיפעיל את המשמרת...</p>
-                <p style="font-size: 0.95rem; color: #888; margin-top: 8px;">המשמרת תתחיל אוטומטית ברגע שהמנחה ילחץ "הפעל משמרת" בלוח הניהול.</p>
-                <div style="margin-top: 20px;">
-                    <span style="display:inline-block; width:12px; height:12px; background:var(--green-success); border-radius:50%; animation: pulse 1.5s infinite;"></span>
-                </div>
             </div>
 
-            <!-- כפתור התחלה ידנית (מצב לא מקוון בלבד) -->
+            <!-- כפתור התחלה עצמאית -->
             <div id="waitingOfflineStart" style="display: none;">
-                <p style="font-size: 1.05rem; color: #555; margin-top: 12px;">מצב עבודה מקומי — אין חיבור לענן הכיתתי.</p>
+                <p style="font-size: 1.05rem; color: #555; margin-top: 12px;">אתם מוכנים להתחיל!</p>
                 <p style="font-size: 0.9rem; color: #888; margin: 8px 0 18px 0;">לחצו על הכפתור כדי להתחיל את המשמרת כשאתם מוכנים:</p>
                 <button class="btn btn-success" style="font-size: 1.15rem; padding: 14px 36px;" onclick="manualStartShift()">▶️ התחל משמרת</button>
             </div>
@@ -950,6 +1030,23 @@
             </div>
 
             <div class="kpi-container" id="teamKpisDisplayGrid"></div>
+
+            <!-- סימולטור בקרת איכות חי — מבוסס על נתוני המשחק האמיתיים -->
+            <div id="liveQualityControl" style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:12px; padding:16px; margin-top:20px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">
+                    <h3 style="border:none; margin:0; color:var(--dark-blue);">📉 בקרת איכות חיה (זמני המתנה)</h3>
+                    <span id="liveScenarioBadge" style="background:#dbeafe; color:#1e40af; padding:4px 14px; border-radius:14px; font-size:0.85rem; font-weight:bold;">תרחיש: —</span>
+                </div>
+                <p style="color:#666; font-size:0.85rem; margin:0 0 12px 0;">המדידות מושפעות מההחלטות שלכם: מדדים גבוהים → זמני המתנה נמוכים ויציבים. מדדים נמוכים → קפיצות וחריגות מהבקרה.</p>
+                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:10px;">
+                    <span style="font-size:0.85rem;">ממוצע: <strong id="liveAvgWait" style="color:var(--blue-info);">—</strong></span>
+                    <span style="font-size:0.85rem;">חריגות מבקרה: <strong id="liveOutliers" style="color:var(--red-danger);">—</strong></span>
+                </div>
+                <div style="position:relative; height:220px; width:100%;"><canvas id="liveControlChart"></canvas></div>
+            </div>
+
+            <!-- אירועי שרשרת בין-קבוצתיים (מופיעים בסבב 3 האינטראקטיבי) -->
+            <div id="chainEventsAreaGame"></div>
 
             <!-- פאנל ניהול המשברים האוטונומיים לפי זמן -->
             <div id="teamCrisisBlock" style="border-top: 2px dashed #cbd5e1; padding-top: 20px; margin-top: 20px;">
@@ -982,6 +1079,7 @@
                         <label style="font-weight:bold; font-size:0.9rem;">📝 תארו את הפעולה שאתם מציעים:</label>
                         <textarea id="openOptionText" class="input-control" rows="2" placeholder="לדוגמה: לכנס ישיבת חירום עם בעלי העניין ולגבש תוכנית תקשורת..."></textarea>
                         <p style="font-size:0.85rem; color:#666; margin:10px 0 6px 0;">🎯 הערכת ההשפעה הצפויה של הפעולה על המדדים (בין 20- ל-20+):</p>
+                        <p style="font-size:0.8rem; color:#9333ea; background:#faf5ff; padding:6px 10px; border-radius:6px; margin:0 0 8px 0;">⚖️ שימו לב: סך ההשפעות החיוביות מוגבל ל-+20. שיפור במדד אחד בא על חשבון אחר — בדיוק כמו בניהול אמיתי.</p>
                         <div id="openOptionImpactGrid" style="display:grid; grid-template-columns:1fr 1fr; gap:8px;"></div>
                     </div>
 
@@ -1045,20 +1143,33 @@
                                 <textarea id="capaCorrectiveAction" class="input-control" rows="2" placeholder="מה תשנו במערכת כדי שזה לא יקרה שוב? (לדוגמה: 'נטמיע מערכת ניטור מחירים אוטומטית')"></textarea>
                             </div>
 
-                            <!-- שלב 5: סעיפי ISO -->
+                            <!-- שלב 5: סעיף ISO 9001 רלוונטי -->
+                            <div style="background: white; padding: 12px; border-radius: 8px; margin-bottom: 12px; border-right: 4px solid #16a085;">
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">📑 5. סעיף ISO 9001:2015 רלוונטי</label>
+                                <select id="capaIsoClause" class="input-control">
+                                    <option value="">-- בחרו את הסעיף המתאים ביותר לטיפול שלכם --</option>
+                                    <option value="10.2.1">10.2.1 — אי-התאמה (Nonconformity)</option>
+                                    <option value="6.1">6.1 — חשיבה מבוססת סיכונים (Risk-based thinking)</option>
+                                    <option value="8.7">8.7 — בקרת תפוקות לא-תואמות (Control of nonconforming outputs)</option>
+                                    <option value="10.2">10.2 — פעולה מתקנת (Corrective Action)</option>
+                                    <option value="9.1">9.1 — ניטור, מדידה, ניתוח והערכה</option>
+                                    <option value="10.3">10.3 — שיפור מתמיד (Continual Improvement)</option>
+                                </select>
+                            </div>
+
+                            <!-- שלב 6: קריטריוני Baldrige -->
                             <div style="background: white; padding: 12px; border-radius: 8px; border-right: 4px solid #0984e3;">
-                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">📜 5. התייחסות לסעיפי ISO 9001:2015</label>
+                                <label style="font-weight: bold; color: #2c3e50; display: block; margin-bottom: 8px;">🏛️ 6. התייחסות לקריטריוני Baldrige (Excellence Framework)</label>
                                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 8px; margin-bottom: 10px;">
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="5.1"> <span>5.1 - מנהיגות ומחויבות</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="6.1"> <span>6.1 - ניהול סיכונים</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="8.1"> <span>8.1 - תכנון תפעולי</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="8.5"> <span>8.5 - שליטה בייצור</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="9.1"> <span>9.1 - ניטור ומדידה</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="9.3"> <span>9.3 - סקירת הנהלה</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="10.1"> <span>10.1 - אי-התאמה ופעולה מתקנת</span></label>
-                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="iso-clause-checkbox" value="10.2"> <span>10.2 - שיפור מתמיד</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Leadership"> <span>1 - מנהיגות (Leadership)</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Strategy"> <span>2 - אסטרטגיה (Strategy)</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Customers"> <span>3 - לקוחות (Customers)</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Measurement"> <span>4 - מדידה וניתוח ידע</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Workforce"> <span>5 - כוח אדם (Workforce)</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Operations"> <span>6 - תפעול (Operations)</span></label>
+                                    <label style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; cursor: pointer;"><input type="checkbox" class="baldrige-checkbox" value="Results"> <span>7 - תוצאות (Results)</span></label>
                                 </div>
-                                <textarea id="capaIsoJustification" class="input-control" rows="2" placeholder="הסבירו כיצד ההחלטה מיישמת את הסעיפים שבחרתם (לדוגמה: 'לפי סעיף 10.1, אנו מנתחים את שורש הבעיה...')"></textarea>
+                                <textarea id="capaIsoJustification" class="input-control" rows="2" placeholder="הסבירו כיצד ההחלטה מתקשרת לקריטריונים שבחרתם (לדוגמה: 'לפי קריטריון הלקוחות, אנו מחזקים את הקשר עם הנוסעים...')"></textarea>
                             </div>
                         </div>
 
@@ -1090,7 +1201,9 @@
                     <ul id="teamPostGameHistoryList" style="padding-right: 20px; font-size: 0.9rem; line-height: 1.5; color: #555;"></ul>
                 </div>
 
-                <button class="btn btn-dark" onclick="resetTeamViewToSetup()">🔄 חזרה למסך הבית</button>
+                <div id="finishRoundMsg" style="margin-bottom:15px; font-size:0.95rem; color:#666;"></div>
+                <div id="roundAdvanceContainer" style="margin-bottom:15px;"></div>
+                <button class="btn btn-dark" onclick="resetTeamViewToSetup()">🔄 חזרה לבחירת אסטרטגיה (אותו סבב)</button>
             </div>
         </div>
     </div>
@@ -1098,39 +1211,142 @@
     <!-- ==================== 📚 דף הנחיות מורחב ומפורט ==================== -->
     <div id="guidelines_panel" class="view-panel">
 
-        <div class="guidelines-header" id="guidelines_top">
-            <h2>📚 מדריך QuickCab המלא והמקיף</h2>
-            <p>הכל שצריך לדעת על המשחק — מהבסיס ועד לאסטרטגיות מתקדמות</p>
+        <!-- פס התקדמות -->
+        <div class="wiz-progress" id="guidelines_top">
+            <div class="wiz-step active" data-step="1"><span class="wiz-dot">1</span> לפני שמתחילים</div>
+            <div class="wiz-line"></div>
+            <div class="wiz-step" data-step="2"><span class="wiz-dot">2</span> תהליך המשחק</div>
+            <div class="wiz-line"></div>
+            <div class="wiz-step" data-step="3"><span class="wiz-dot">3</span> מדריך מהיר</div>
+            <div class="wiz-line"></div>
+            <div class="wiz-step" data-step="4"><span class="wiz-dot">4</span> סודות להצלחה</div>
         </div>
 
-        <!-- כפתור התחלה בולט -->
-        <div style="text-align: center; margin: 20px 0 30px 0;">
-            <button class="btn btn-primary" style="font-size: 1.2rem; padding: 16px 40px;" onclick="switchActiveTab('team_station')">
-                ▶️ קראתי את המדריך — בואו נתחיל!
-            </button>
-            <p style="color: #888; font-size: 0.9rem; margin-top: 8px;">מומלץ לקרוא את המדריך לפני שמתחילים. אפשר לחזור אליו בכל רגע מהכפתור למעלה.</p>
+        <!-- מסך 1: לפני שמתחילים -->
+        <div class="wiz-screen active" data-screen="1">
+            <h2 class="wiz-title">🎬 לפני שמתחילים</h2>
+            <div class="wiz-cards-3">
+                <div class="wiz-card" style="border-top-color:var(--blue-info);">
+                    <div class="wiz-icon">🎯</div>
+                    <h3>המטרה שלכם</h3>
+                    <p>להוביל את QuickCab להצלחה באמצעות החלטות איכות ושירות חכמות.</p>
+                </div>
+                <div class="wiz-card" style="border-top-color:var(--taxi-yellow);">
+                    <div class="wiz-icon">⏱️</div>
+                    <h3>משך המשחק</h3>
+                    <p>כ-3 דקות משחק פעיל לכל סבב.</p>
+                </div>
+                <div class="wiz-card" style="border-top-color:var(--green-success);">
+                    <div class="wiz-icon">🏆</div>
+                    <h3>איך מנצחים</h3>
+                    <p>קבלת החלטות נכונות ומהירות במשברים, תוך שמירה על איזון המדדים.</p>
+                </div>
+            </div>
+            <div class="wiz-nav">
+                <span></span>
+                <button class="btn btn-primary" onclick="wizGo(2)">הבא ←</button>
+            </div>
         </div>
 
-        <!-- תוכן עניינים מורחב -->
-        <div class="guidelines-toc">
-            <h3>📋 תוכן עניינים מפורט</h3>
-            <ul>
-                <li><a onclick="scrollToSection('g-intro')">🎯 הקדמה — למה המשחק הזה חשוב?</a></li>
-                <li><a onclick="scrollToSection('g-overview')">🏢 סקירה כללית — מבנה המשחק</a></li>
-                <li><a onclick="scrollToSection('g-teams')">👥 קבוצות העניין — מי אתם?</a></li>
-                <li><a onclick="scrollToSection('g-phase0')">🎯 שלב 0 — תוכנית הבראה (תקציב 100 נק')</a></li>
-                <li><a onclick="scrollToSection('g-strategy')">📋 גיבוש אסטרטגיית ISO 9001</a></li>
-                <li><a onclick="scrollToSection('g-prevention')">🛡️ תוכניות מנע — איך להגן על עצמכם</a></li>
-                <li><a onclick="scrollToSection('g-gameplay')">🎮 המשחק עצמו — דקות של אקשן</a></li>
-                <li><a onclick="scrollToSection('g-crises')">🚨 המשברים — מה יקרה ואיך להגיב</a></li>
-                <li><a onclick="scrollToSection('g-metrics')">📊 המדדים — הסבר מפורט</a></li>
-                <li><a onclick="scrollToSection('g-decisions')">💡 קבלת החלטות נכונות</a></li>
-                <li><a onclick="scrollToSection('g-examples')">📝 דוגמאות מלאות ממשחקים אמיתיים</a></li>
-                <li><a onclick="scrollToSection('g-tips')">🏆 טיפים מתקדמים לציון גבוה</a></li>
-                <li><a onclick="scrollToSection('g-instructor')">👨‍🏫 מדריך למנחה</a></li>
-                <li><a onclick="scrollToSection('g-faq')">❓ שאלות ותשובות (FAQ מורחב)</a></li>
-            </ul>
+        <!-- מסך 2: תהליך המשחק -->
+        <div class="wiz-screen" data-screen="2">
+            <h2 class="wiz-title">🗺️ תהליך המשחק</h2>
+            <div class="wiz-flow">
+                <div class="wiz-flow-item"><div class="wiz-flow-num">1</div><div class="wiz-flow-icon">📚</div><span>לומדים את ההנחיות</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item"><div class="wiz-flow-num">2</div><div class="wiz-flow-icon">🚀</div><span>ממשיכים בעצמכם לעמדת העבודה</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item"><div class="wiz-flow-num">3</div><div class="wiz-flow-icon">👥</div><span>בוחרים קבוצה ובונים אסטרטגיה</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item"><div class="wiz-flow-num">4</div><div class="wiz-flow-icon">⚠️</div><span>מתמודדים עם משברים</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item" style="background:#dbeafe;"><div class="wiz-flow-num">5</div><div class="wiz-flow-icon">🔵</div><span>סבב 1 — למידה</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item"><div class="wiz-flow-num">6</div><div class="wiz-flow-icon">💬</div><span>דיון כיתתי</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item" style="background:#dcfce7;"><div class="wiz-flow-num">7</div><div class="wiz-flow-icon">🟢</div><span>סבב 2 — שיפור</span></div>
+                <div class="wiz-flow-arrow">↓</div>
+                <div class="wiz-flow-item" style="background:#f3e8ff;"><div class="wiz-flow-num">8</div><div class="wiz-flow-icon">🤝</div><span>סבב 3 — בעלי עניין ואינטראקציה</span></div>
+            </div>
+            <div class="wiz-nav">
+                <button class="btn btn-secondary" onclick="wizGo(1)">→ הקודם</button>
+                <button class="btn btn-primary" onclick="wizGo(3)">הבא ←</button>
+            </div>
         </div>
+
+        <!-- מסך 3: מדריך מהיר -->
+        <div class="wiz-screen" data-screen="3">
+            <h2 class="wiz-title">⚡ מדריך מהיר</h2>
+            <p style="text-align:center; color:#888; margin-bottom:20px;">לחצו על כל כרטיס כדי לפתוח את ההסבר</p>
+            <div class="wiz-cards-4">
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">🎯</div><h4>תכנון</h4>
+                    <div class="wiz-flip-body">בחרו תוכנית מנע שמתאימה לסוג האירועים של הצוות שלכם. תוכנית טובה מגינה עליכם ב-75% מהנזק.</div>
+                </div>
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">💰</div><h4>תקציב</h4>
+                    <div class="wiz-flip-body">יש לכם 100 נקודות לחלק בין יעדי ההבראה. אל תחרגו — חריגה גדולה פוגעת בציון.</div>
+                </div>
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">⚠️</div><h4>משברים (CAPA)</h4>
+                    <div class="wiz-flip-body">בכל משבר מלאו את טופס ה-CAPA ב-6 שלבים: זיהוי, ניתוח סיכון, פעולה מיידית, פעולה מתקנת, סעיף ISO 9001 וקריטריון Baldrige. מענה מהיר = בונוס.</div>
+                </div>
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">📉</div><h4>בקרת איכות חיה</h4>
+                    <div class="wiz-flip-body">בחדר המצב יופיע תרשים בקרה (SPC) של זמני ההמתנה. ההחלטות שלכם משפיעות עליו: החלטות טובות → תהליך יציב; גרועות → חריגות.</div>
+                </div>
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">🔄</div><h4>שלושה סבבים</h4>
+                    <div class="wiz-flip-body">סבב 1 ללמידה, סבב 2 לשיפור, וסבב 3 לניהול בעלי עניין. אתם עוברים בעצמכם בין הסבבים בלחיצת כפתור, ובסבב 2 תראו את תוצאות סבב 1 להשוואה.</div>
+                </div>
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">🤝</div><h4>בעלי עניין</h4>
+                    <div class="wiz-flip-body">בסבב 3 תמפו את בעלי העניין (נהגים, לקוחות, רגולטור...), תשקיעו תקציב חברתי, ותקבלו מדד חוסן. ההחלטות של צוותים אחרים ישפיעו עליכם — וחוסן גבוה מגן עליכם!</div>
+                </div>
+                <div class="wiz-flip" onclick="this.classList.toggle('open')">
+                    <div class="wiz-flip-icon">🏆</div><h4>ניקוד</h4>
+                    <div class="wiz-flip-body">הציון משקלל את המדדים, מהירות התגובה, ואיכות הנימוקים. איזון בין כל המדדים הוא המפתח.</div>
+                </div>
+            </div>
+            <div class="wiz-nav">
+                <button class="btn btn-secondary" onclick="wizGo(2)">→ הקודם</button>
+                <button class="btn btn-primary" onclick="wizGo(4)">הבא ←</button>
+            </div>
+        </div>
+
+        <!-- מסך 4: סודות להצלחה -->
+        <div class="wiz-screen" data-screen="4">
+            <h2 class="wiz-title">💡 סודות להצלחה</h2>
+            <div class="wiz-dodont">
+                <div class="wiz-do">
+                    <h3>🟢 עשו</h3>
+                    <ul>
+                        <li>ענו מהר על משברים (בונוס מהירות)</li>
+                        <li>מלאו את כל 6 שלבי ה-CAPA</li>
+                        <li>עקבו אחר תרשים הבקרה החי</li>
+                        <li>בסבב 2 — שפרו לפי לקחי סבב 1</li>
+                        <li>בסבב 3 — מפו נכון את בעלי העניין הקריטיים (חוסן גבוה = הגנה)</li>
+                        <li>שמרו על איזון בין כל המדדים</li>
+                    </ul>
+                </div>
+                <div class="wiz-dont">
+                    <h3>🔴 אל תעשו</h3>
+                    <ul>
+                        <li>חריגה גדולה מהתקציב (100 נק')</li>
+                        <li>התמקדות במדד אחד בלבד</li>
+                        <li>התעלמות ממשברים</li>
+                        <li>מענה חפוז בלי נימוק CAPA מלא</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="background:#f0fdf4; border:1px solid #bbf7d0; border-radius:10px; padding:14px 18px; margin-top:18px; text-align:center;">
+                <strong style="color:var(--green-success);">✅ שימו לב:</strong> זהו מצב דמו עצמאי — לאחר שתעברו על ההנחיות, תוכלו להמשיך בעצמכם לעמדת העבודה.
+            </div>
+
+            <!-- הסבר מורחב ומפורט (נשמר, נפתח בלחיצה) -->
+            <div style="margin-top:30px;">
+                <button class="btn btn-info" style="width:100%; font-size:1.05rem;" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display==='block'?'none':'block'; this.innerText = this.nextElementSibling.style.display==='block' ? '🔼 הסתר הסבר מורחב' : '📖 הצג הסבר מורחב ומפורט';">📖 הצג הסבר מורחב ומפורט</button>
+                <div style="display:none; margin-top:20px; border-top:2px dashed #ddd; padding-top:20px;">
 
         <!-- ========== הקדמה ========== -->
         <div class="guidelines-section" id="g-intro">
@@ -1185,26 +1401,19 @@
                     </tr>
                     <tr>
                         <td><strong>משחק פעיל</strong></td>
-                        <td>גמיש (נקבע ע"י המנחה)</td>
-                        <td>טיפול באירועים ייעודיים בזמן אמת</td>
+                        <td>3 דקות</td>
+                        <td>טיפול באירועים ייעודיים בזמן אמת (אירוע כל דקה)</td>
                         <td>קבלת החלטות מהירות ונכונות</td>
                     </tr>
                     <tr>
                         <td><strong>סיכום</strong></td>
                         <td>3-5 דקות</td>
-                        <td>צפייה בתוצאות והעלאה לענן</td>
+                        <td>צפייה בתוצאות ומעבר לסבב הבא</td>
                         <td>למידה מההחלטות</td>
-                    </tr>
-                    <tr>
-                        <td><strong>דיון כיתתי</strong></td>
-                        <td>20-30 דקות</td>
-                        <td>המנחה מציג את כל הקבוצות ומנחה דיון מעמיק</td>
-                        <td>השוואה, רפלקציה ולמידה קולקטיבית לעומק</td>
                     </tr>
                 </table>
                 <p style="margin-top: 12px; font-size: 0.9rem; color: #555;">
-                    💡 <strong>הערה:</strong> משך המשחק הפעיל גמיש לחלוטין — המנחה קובע אותו בפאנל הניהול (בין 10 ל-60 דקות),
-                    יחד עם תזמון האירועים והקצב ביניהם. זמני ההכנה והדיון הם המלצה ומותאמים לפי אורך השיעור.
+                    💡 <strong>הערה:</strong> במצב דמו זה המשמרת הפעילה קצובה ל-<strong>3 דקות</strong>, עם אירוע חדש כל דקה (סה"כ 3 אירועים). זמני ההכנה הם המלצה.
                 </p>
             </div>
 
@@ -1496,7 +1705,7 @@
                 <p>
                     כשתגיבו למשבר בחדר המצב, הנימוק שלכם צריך לעקוב אחר תהליך <strong>CAPA</strong>
                     (Corrective And Preventive Action) — תהליך הפעולה המתקנת והמונעת של ISO 9001.
-                    ארבעת השלבים, וההפניה לסעיף הרלוונטי בתקן:
+                    הטבלה הבאה ממפה לכל שלב בתהליך את הסעיף הרלוונטי בתקן, לצורך הבנה:
                 </p>
                 <table class="guidelines-table">
                     <tr>
@@ -1526,13 +1735,22 @@
                     </tr>
                 </table>
 
+                <div class="guidelines-highlight">
+                    <strong>📑 שלב 5 בטופס — בחירת סעיף ISO 9001:</strong><br>
+                    בנוסף לארבעת השלבים שבטבלה, בטופס ה-CAPA בפועל תבחרו <strong>בעצמכם</strong> מתוך רשימה
+                    את סעיף ה-ISO 9001:2015 הרלוונטי ביותר לטיפול שלכם (10.2.1 / 6.1 / 8.7 / 10.2 / 9.1 / 10.3).
+                    זו בחירה מחייבת — לא ניתן לשלוח החלטה בלעדיה — בדיוק כמו קריטריון ה-Baldrige שבא אחריה.
+                </div>
+
                 <div class="guidelines-demo">
                     <h5>✅ דוגמה לנימוק לפי CAPA:</h5>
                     <div class="guidelines-demo-box">
-                        <strong>1) זיהוי וסיווג:</strong> טעות תהליכית — האלגוריתם שידך נהגים שגוי (אי-התאמה תפעולית, סעיף 10.2.1).<br>
-                        <strong>2) ניתוח סיכון:</strong> חומרה גבוהה (פגיעה ב-SLA), הסתברות גבוהה אם לא נטפל (סעיף 6.1).<br>
-                        <strong>3) פעולה מיידית:</strong> מעבר לניתוב ידני כדי לבלום את הנזק לנוסעים (סעיף 8.7).<br>
-                        <strong>4) פעולה מתקנת:</strong> הטמעת בדיקת גרסאות לפני עלייה לאוויר, למניעת הישנות (סעיף 10.2).
+                        <strong>1) זיהוי וסיווג:</strong> טעות תהליכית — האלגוריתם שידך נהגים שגוי (אי-התאמה תפעולית).<br>
+                        <strong>2) ניתוח סיכון:</strong> חומרה גבוהה (פגיעה ב-SLA), הסתברות גבוהה אם לא נטפל.<br>
+                        <strong>3) פעולה מיידית:</strong> מעבר לניתוב ידני כדי לבלום את הנזק לנוסעים.<br>
+                        <strong>4) פעולה מתקנת:</strong> הטמעת בדיקת גרסאות לפני עלייה לאוויר, למניעת הישנות.<br>
+                        <strong>5) סעיף ISO 9001 שנבחר:</strong> 10.2 — פעולה מתקנת.<br>
+                        <strong>6) קריטריון Baldrige שנבחר:</strong> תפעול (Operations) — שיפור מערך התפעול שמנע את הקריסה.
                     </div>
                 </div>
             </div>
@@ -1648,8 +1866,8 @@
             <div class="guidelines-subsection">
                 <h4>⏱️ איך עובד ציר הזמן</h4>
                 <p>
-                    משך המשמרת ולוח האירועים נקבעים מראש על ידי המנחה. במהלך המשמרת יופיעו
-                    מספר אירועים (בין 1 ל-10), המתפזרים לאורך הזמן לפי הקצב שהמנחה הגדיר.
+                    משך המשמרת קצוב ל-3 דקות. במהלך המשמרת יופיעו
+                    3 אירועים, אחד בכל דקה בערך.
                     <strong>כל צוות מקבל אירועים שונים — רלוונטיים בדיוק למדדים ולאתגרים שלו.</strong>
                 </p>
                 <table class="guidelines-table">
@@ -1688,7 +1906,9 @@
 
             <div class="guidelines-highlight">
                 <strong>🎲 אירועים ייעודיים לכל צוות:</strong><br>
-                לכל אחד מ-8 הצוותים יש בנק של 10 אירועים רלוונטיים. לדוגמה:<br>
+                לכל אחד מ-8 הצוותים יש בנק של 10 אירועים רלוונטיים. בתחילת כל משמרת נבחרים אקראית
+                3 אירועים מתוך הבנק — כך שגם באותה קבוצה, הרצות שונות של המשחק
+                ייתכן שיציגו אירועים שונים או בסדר שונה. לדוגמה:<br>
                 👥 Customers → חרם נוסעים, צניחת דירוג, דליפת פרטים<br>
                 🚗 Drivers → שביתת נהגים, מחירי דלק, ביטוח בריאות<br>
                 📞 Dispatchers → קריסת אלגוריתם, עומס שיא, נפילת שרתים<br>
@@ -1706,20 +1926,57 @@
             </div>
         </div>
 
+        <!-- ========== סבב 3: בעלי עניין ========== -->
+        <div class="guidelines-section" id="g-stakeholders">
+            <h3>🤝 סבב 3 — ניהול בעלי עניין ותלות הדדית</h3>
+            <p>
+                סבב 3 לוקח אתכם לרמה הניהולית הגבוהה ביותר, בהתאם ל<strong>תקן ISO 9001 סעיף 4.2</strong> —
+                "הבנת הצרכים והציפיות של בעלי עניין". הלקח המרכזי: ארגון לא פועל בוואקום, וכל החלטה משפיעה על אחרים.
+            </p>
+
+            <h4>🗺️ מפת השפעות</h4>
+            <p>
+                לכל קבוצה מוצגים בעלי העניין (נהגים, לקוחות, רגולטור, משקיעים, עובדים, קהילה). עליכם למפות לכל אחד
+                את הפתרון הנכון. <strong>בעלי העניין הקריטיים שלכם</strong> (לפי תפקיד הקבוצה) מודגשים — ובחירה נכונה
+                עבורם שווה ניקוד כפול. לכל "פתרון טוב" יש <strong>עלות תקציבית</strong>, ועלות כל הפתרונות הטובים יחד
+                גבוהה מהתקציב הכולל — כך שלא ניתן "לכסות" את כל בעלי העניין באותה רמה, ועליכם לתעדף.
+            </p>
+
+            <h4>💰 תקציב משותף (100 נקודות)</h4>
+            <p>
+                התקציב משותף למפת ההשפעות <strong>וגם</strong> לכרטיסי ההשקעה החברתית-רגולטורית (קרן רווחה לנהגים,
+                פיצוי ללקוחות, התאמה לתקן עירוני ועוד). כל החלטה — במפה או בהשקעות — צורכת מאותו תקציב, ולכן כל
+                בחירה היא גם ויתור על משהו אחר. ההשקעות וההחלטות הנכונות במפה מגדילות את מדד החוסן שלכם.
+            </p>
+
+            <h4>🛡️ מדד חוסן ארגוני</h4>
+            <p>
+                מבחירת בעלי העניין וההשקעות מחושב <strong>מדד חוסן (0-100)</strong>. מדד זה מגן עליכם:
+                חוסן גבוה → אירועי שרשרת פוגעים בכם פחות; חוסן נמוך → אתם חשופים.
+            </p>
+
+            <h4>🔗 אירועי שרשרת (Internal Customer)</h4>
+            <p>
+                לאחר ההגשה חוזרים לחדר המצב במצב אינטראקטיבי. <strong>החלטות של צוותים אחרים הופכות לאירועים אצלכם</strong> —
+                למשל, אם צוות אחר מעלה מחירים, אתם סופגים גל תלונות. זהו עיקרון <strong>הלקוח הפנימי</strong> של דמינג:
+                כל מחלקה היא ספק וגם לקוח, והחלטה אחת מתגלגלת לאורך השרשרת. הגיבו בתהליך CAPA כדי לרכך את הפגיעה.
+            </p>
+        </div>
+
         <!-- ========== FAQ מורחב ========== -->
         <div class="guidelines-section" id="g-faq">
             <h3>❓ שאלות ותשובות (FAQ מורחב)</h3>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ כמה זמן המשחק נמשך?</h5>
                 <div class="guidelines-faq-answer">
-                    משך המשמרת נקבע על ידי המנחה (מינימום 10 דקות, ניתן להגדיל עד 60 דקות).
-                    האירוע הראשון מופיע אוטומטית אחרי 10 שניות, ושאר האירועים (1 עד 10, לפי בחירת המנחה)
-                    מופיעים אחריו לפי הקצב שהמנחה הגדיר בפאנל הניהול. בתום הזמן המשחק מסתיים אוטומטית והנתונים מועלים לענן.
+                    משך המשמרת קצוב ל-<strong>3 דקות</strong>.
+                    האירוע הראשון מופיע אוטומטית אחרי 10 שניות, ושני האירועים הנוספים
+                    מופיעים אחריו בקצב של אחד בכל דקה. בתום 3 הדקות המשמרת מסתיימת אוטומטית ועוברים למסך הסיכום.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ מה קורה אם לא עונים למשבר בזמן?</h5>
                 <div class="guidelines-faq-answer">
                     אם לא עניתם בתוך 60 שניות, אתם מקבלים רק +5 נקודות במקום +10.
@@ -1728,7 +1985,7 @@
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ האם ניתן לחרוג מתקציב 100 הנקודות בשלב 0?</h5>
                 <div class="guidelines-faq-answer">
                     כן, ניתן לחרוג. המערכת תציג אזהרה כתומה אך לא תחסום אתכם. עם זאת, חריגה גדולה (מעל 120 נק')
@@ -1736,7 +1993,7 @@
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ מה ההבדל בין תוכנית הבראה לתוכנית מנע?</h5>
                 <div class="guidelines-faq-answer">
                     <strong>תוכנית הבראה (שלב 0):</strong> השקעות רחבות בתוכנית הצוות — עד 100 נקודות, מגוון יעדים.
@@ -1746,7 +2003,7 @@
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ איך יודעים איזו תוכנית מנע לבחור?</h5>
                 <div class="guidelines-faq-answer">
                     תלוי בקבוצה שלכם ובסוג האירועים שתתמודדו איתם:<br>
@@ -1758,117 +2015,138 @@
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
-                <h5>❓ מה זה ISO 9001 ולמה זה חשוב במשחק?</h5>
+            <div class="guidelines-faq-item open" >
+                <h5>❓ מה ההבדל בין ISO 9001 ל-Baldrige במשחק?</h5>
                 <div class="guidelines-faq-answer">
-                    ISO 9001 הוא תקן בינלאומי לניהול איכות. במשחק, אתם חייבים לנמק את כל ההחלטות שלכם בעזרת עקרונות ISO.
-                    זה מלמד אתכם לחשוב בצורה מובנית וניהולית — כמו מנהלים אמיתיים.
-                    עקרונות מרכזיים: התמקדות בלקוח, מנהיגות, מעורבות אנשים, גישה מבוססת תהליכים, שיפור מתמיד.
+                    שניהם מסגרות לניהול איכות, ושתיהן נבחרות בפועל בטופס ה-CAPA.
+                    <strong>ISO 9001</strong> משמש לתכנון האסטרטגיה (שלב 0), ובטופס המשבר תבחרו בשלב 5
+                    את <strong>סעיף ה-ISO 9001:2015</strong> הרלוונטי לטיפול שלכם (לדוגמה 10.2 — פעולה מתקנת).
+                    <strong>Baldrige (Excellence Framework)</strong> נבחר בשלב 6 — בכל החלטה תבחרו לאיזה מ-7 קריטריוני
+                    Baldrige (מנהיגות, אסטרטגיה, לקוחות, מדידה, כוח אדם, תפעול, תוצאות) ההחלטה מתקשרת. שתי הבחירות
+                    מחייבות לפני שליחת ההחלטה, וכך אתם לומדים לחשוב בצורה מובנית וניהולית — כמו מנהלים אמיתיים.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
-                <h5>❓ האם הנתונים שלי מועלים לענן?</h5>
+            <div class="guidelines-faq-item open" >
+                <h5>❓ האם הנתונים שלי נשמרים?</h5>
                 <div class="guidelines-faq-answer">
-                    כן! כל החלטה מועלית מיידית לענן (Firebase). המנחה יכול לראות את הנתונים שלכם בזמן אמת בלוח המטה המרכזי.
-                    זה מאפשר למנחה לעקוב אחרי כל הקבוצות בו-זמנית ולהציג את התוצאות בסוף.
+                    כן — כל החלטה נשמרת באופן מקומי במחשב שלכם (LocalStorage), כך שתוכלו לחזור ולהשוות בין הסבבים.
+                    זהו מצב דמו עצמאי, כך שאין צד שני שצופה בנתונים שלכם בזמן אמת.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
+                <h5>❓ מה קורה אם רשת ה-Wi-Fi נופלת (מצב לא-מקוון)?</h5>
+                <div class="guidelines-faq-answer">
+                    אל דאגה — <strong>המערכת ממשיכה לעבוד ושומרת הכול מקומית במחשב שלכם</strong> בכל מקרה, עם או בלי חיבור לאינטרנט.
+                    תוכלו להמשיך לשחק כרגיל ללא הפרעה.
+                </div>
+            </div>
+
+            <div class="guidelines-faq-item open" >
                 <h5>❓ מה קורה אם בוחרים בחלופה "שגויה"?</h5>
                 <div class="guidelines-faq-answer">
                     אין "חלופה שגויה"! כל חלופה משפיעה על המדדים בצורה שונה. חלופה אחת עשויה להשפר שביעות רצון אך לפגוע ברווחיות.
-                    זה עקרון ניהול אמיתי — אתם צריכים לאזן בין מטרות שונות. המנחה יעריך אתכם לפי הנימוק, לא לפי הבחירה עצמה.
+                    זה עקרון ניהול אמיתי — אתם צריכים לאזן בין מטרות שונות. שימו לב לנימוק שאתם נותנים, לא רק לבחירה עצמה.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ איך עובדת החלופה הפתוחה (✍️)?</h5>
                 <div class="guidelines-faq-answer">
                     מעבר ל-4 החלופות המוכנות, בכל אירוע תוכלו לבחור ב<strong>"חלופה פתוחה"</strong> ולנסח פעולה ניהולית משלכם.
                     לאחר שתכתבו את הפעולה, תעריכו בעצמכם את השפעתה הצפויה על כל אחד מהמדדים (בין 20- ל-20+).
-                    זו הזדמנות לחשיבה יצירתית ועצמאית — אבל זכרו שעליכם להצדיק את ההערכה שלכם בנימוק ה-ISO 9001.
+                    זו הזדמנות לחשיבה יצירתית ועצמאית — אבל זכרו שעליכם להצדיק את ההערכה שלכם בנימוק לפי קריטריוני Baldrige.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ איך משפרים את הציון?</h5>
                 <div class="guidelines-faq-answer">
-                    <strong>5 דרכים להצלחה:</strong><br>
+                    <strong>6 דרכים להצלחה:</strong><br>
                     1️⃣ בחרו תוכנית הבראה חכמה בשלב 0 (מתאימה למדד הראשי)<br>
                     2️⃣ בחרו תוכנית מנע שמתאימה לכם (CRM/ISO/SERVICE)<br>
                     3️⃣ ענו מהר למשברים (בתוך 60 שניות = +10 נק')<br>
-                    4️⃣ נמקו את ההחלטות בעזרת ISO 9001 (לפחות 30 מילים)<br>
-                    5️⃣ אזנו בין המדדים השונים (אל תתמקדו רק באחד)
+                    4️⃣ בחרו את סעיף ה-ISO 9001 המתאים ביותר לכל החלטה<br>
+                    5️⃣ נמקו את ההחלטות לפי קריטריוני Baldrige (בחרו קריטריון אחד לפחות)<br>
+                    6️⃣ אזנו בין המדדים השונים (אל תתמקדו רק באחד)
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ האם ניתן לשחק שוב אחרי סיום?</h5>
                 <div class="guidelines-faq-answer">
-                    כן! לחצו על "🔄 חזרה למסך הבית" בסוף המשחק. אתם יכולים לבחור קבוצה אחרת או לשחק שוב עם אותה קבוצה.
-                    המנחה יכול לאפס את כל הנתונים בעזרת "🧹 איפוס קשיח" בפאנל המנהל.
+                    כן! לחצו על "🔄 חזרה לבחירת אסטרטגיה" בסוף המשחק, או רעננו את הדף כדי להתחיל את כל הסימולציה מההתחלה.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ מה עושים במקרה של בעיה טכנית?</h5>
                 <div class="guidelines-faq-answer">
                     אם יש בעיה:<br>
                     • רעננו את הדף (F5 או Ctrl+R)<br>
                     • בדקו את חיבור האינטרנט<br>
-                    • נסו דפדפן אחר (Chrome / Firefox / Edge מומלצים)<br>
-                    • פנו למנחה לעזרה<br>
-                    • המנחה יכול להשתמש בפאנל המנהל כדי לאפס את המערכת אם נדרש
+                    • נסו דפדפן אחר (Chrome / Firefox / Edge מומלצים)
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ האם המשחק עובד בלי אינטרנט?</h5>
                 <div class="guidelines-faq-answer">
-                    המשחק עובד גם בלי אינטרנט! הנתונים נשמרים במחשב המקומי (LocalStorage).
-                    עם זאת, <strong>בלי אינטרנט המנחה לא יראה את הנתונים שלכם בזמן אמת</strong>.
-                    אם יש אינטרנט, הכל מסתנכרן אוטומטית לענן.
+                    המשחק עובד גם בלי אינטרנט! זהו מצב דמו עצמאי, והנתונים נשמרים תמיד במחשב המקומי (LocalStorage)
+                    — בלי תלות בחיבור לרשת.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
+            <div class="guidelines-faq-item open" >
                 <h5>❓ כמה אנשים יכולים לשחק ביחד?</h5>
                 <div class="guidelines-faq-answer">
-                    המשחק תומך ב-<strong>4, 6 או 8 קבוצות</strong> (המנחה קובע).
-                    כל קבוצה יכולה להיות בין 1-5 סטודנטים. בסך הכל, כיתה של 20-40 סטודנטים יכולה לשחק בו-זמנית,
-                    כל קבוצה במחשב נפרד.
+                    במצב דמו זה זמינות <strong>6 קבוצות עניין</strong> לבחירה (Customers, Drivers, Dispatchers, Management, Service & Support, Maintenance).
+                    אתם משחקים לבד ובוחרים את הקבוצה שמעניינת אתכם.
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
-                <h5>❓ מה המנחה רואה בפאנל המנהל?</h5>
+            <div class="guidelines-faq-item open" >
+                <h5>❓ זהו מצב דמו עצמאי — איך זה עובד בלי מנחה?</h5>
                 <div class="guidelines-faq-answer">
-                    המנחה רואה:<br>
-                    ✅ כל הקבוצות שמשחקות כרגע (בזמן אמת)<br>
-                    ✅ את כל ההחלטות והנימוקים של כל קבוצה<br>
-                    ✅ את המדדים הסופיים של כל קבוצה<br>
-                    ✅ את תוכניות ההבראה והמנע של כולם<br>
-                    ✅ דוח מפורט שניתן לייצא ל-Excel
+                    בגרסה זו אתם משחקים <strong>לבד, בקצב שלכם</strong> — אין צורך במנחה שיאשר מעברים בין שלבים.<br>
+                    ✅ מנחה וירטואלי (הפס הכחול בראש המסך + הודעות קופצות) ינחה אתכם בכל שלב מה לעשות<br>
+                    ✅ אתם לוחצים בעצמכם על "המשך לשלב הבא" כשאתם מוכנים<br>
+                    ✅ כל ההחלטות, המדדים והתוצאות שלכם נשמרים במחשב זה לאורך כל הסבבים<br>
+                    ✅ תוכלו לחזור ולהשוות בין הביצועים שלכם בכל סבב
                 </div>
             </div>
 
-            <div class="guidelines-faq-item" onclick="toggleFaqItem(this)">
-                <h5>❓ איך המנחה מאפס את המערכת לסבב חדש?</h5>
+            <div class="guidelines-faq-item open" >
+                <h5>❓ איך עוברים בין הסבבים (למידה / שיפור / בעלי עניין)?</h5>
                 <div class="guidelines-faq-answer">
-                    המנחה נכנס לפאנל המנהל (קוד: 1234), לוחץ על "🧹 איפוס קשיח מיידי",
-                    ומאשר. זה מוחק את כל הנתונים מהענן ומכל המחשבים, והמערכת מוכנה לסבב חדש.
+                    בסיום כל סבב יופיע כפתור <strong>"➡️ המשך לסבב הבא"</strong> במסך הסיכום.
+                    לחיצה עליו מעבירה אתכם אוטומטית לסבב הבא, ובסבב 2 תוכלו לראות את התוצאות שלכם מסבב 1 כנקודת השוואה.
+                </div>
+            </div>
+
+            <div class="guidelines-faq-item open" >
+                <h5>❓ אפשר להתחיל מחדש?</h5>
+                <div class="guidelines-faq-answer">
+                    כן — בכל שלב אפשר ללחוץ על "🔄 חזרה לבחירת אסטרטגיה" כדי להתחיל סבב מחדש,
+                    או לרענן את הדף כדי לאפס את כל ההתקדמות ולהתחיל את כל הסימולציה מההתחלה.
                 </div>
             </div>
 
         </div>
 
+
         <!-- כפתור חזרה לתחילת הדף -->
-        <div style="text-align: center; margin: 30px 0 10px 0;">
-            <button class="btn btn-primary" style="font-size: 1.05rem; padding: 14px 36px;" onclick="document.getElementById('guidelines_top').scrollIntoView({ behavior: 'smooth' });">
-                ⬆️ חזרה לתחילת המדריך
-            </button>
+                </div>
+            </div>
+
+            <div class="wiz-nav" style="justify-content:center; margin-top:30px;">
+                <button id="wizStartBtn" class="btn btn-success" style="font-size:1.2rem; padding:16px 44px;" onclick="markGuidelinesDone(); switchActiveTab('team_station')">🚀 הבנתי, התחל סימולציה</button>
+            </div>
+            <div id="gateUnlockedNote" style="display:block; text-align:center; margin-top:10px; color:var(--green-success); font-weight:bold;">✅ אתם מוכנים! ניתן להיכנס לעמדת העבודה.</div>
+            <div style="text-align:center; margin-top:14px;">
+                <button class="btn btn-secondary" onclick="wizGo(1)">↻ חזרה להתחלה</button>
+            </div>
         </div>
 
     </div>
@@ -1887,8 +2165,8 @@
                 <h3>📋 מקטע 1: פרטי הצוות והזירה</h3>
                 <div class="sim-grid2">
                     <div class="sim-fg">
-                        <label>שם / מספר הצוות:</label>
-                        <input type="text" id="simTeamName" placeholder="לדוגמה: צוות 3">
+                        <label>שם / מספר הצוות — שמות המשתתפים:</label>
+                        <input type="text" id="simTeamName" placeholder="לדוגמה: צוות 3 — עדן גולן, נועה קירל, סטטיק ובן אל">
                     </div>
                     <div class="sim-fg">
                         <label>העיר שהוקצתה לצוות:</label>
@@ -1938,220 +2216,11 @@
                     </div>
                 </div>
                 <button class="btn btn-success" style="width:100%; margin-top:20px; font-size:1.1rem;" onclick="simExportPDF()">💾 שמור והורד דף עבודה כ-PDF</button>
-                <button class="btn" style="background:var(--purple-holder); color:white; width:100%; margin-top:12px; font-size:1.1rem;" onclick="simSendToFacilitator()">📤 שלח תשובות למנחה (למצגת)</button>
             </div>
         </div>
     </div>
 
 
-    <!-- ==================== 🖥️ מצגת תוצאות ==================== -->
-    <div id="presentation_panel" class="view-panel">
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
-            <div>
-                <h2 style="border:none; margin:0; color:var(--dark-blue);">🖥️ מצגת תוצאות — דפי עבודה</h2>
-                <p style="color:#555; margin-top:6px;">תשובות הצוותים מופיעות כאן אוטומטית ברגע שהם שולחים. רענון בזמן אמת.</p>
-            </div>
-            <div style="display:flex; gap:10px;">
-                <span id="presCount" style="background:#7c3aed; color:white; padding:8px 16px; border-radius:20px; font-weight:bold;">0 צוותים</span>
-                <button class="btn btn-danger" onclick="presClear()">🧹 נקה הכל</button>
-            </div>
-        </div>
-        <div id="presContent">
-            <div style="text-align:center; padding:60px 20px; color:#888;">
-                <div style="font-size:3rem;">📭</div>
-                <p style="font-size:1.1rem; margin-top:10px;">עדיין לא התקבלו דפי עבודה. הם יופיעו כאן ברגע שצוותים ישלחו.</p>
-            </div>
-        </div>
-    </div>
-
-
-    <!-- ==================== 🔐 פאנל מנהל ==================== -->
-    <div id="admin_control_panel" class="view-panel">
-
-        <!-- מסך נעילת קוד סודי -->
-        <div id="adminLockView" class="admin-lock-screen">
-            <div style="font-size: 4rem; margin-bottom: 15px;">🔐</div>
-            <h2>כניסת מנהל סדנה / מרצה</h2>
-            <p style="color: #666; margin-bottom: 15px;">הזינו קוד גישה סודי (PIN) כדי לפתוח את אפשרויות הניהול ולוח המטה המרכזי:</p>
-
-            <div class="pin-input-container">
-                <input type="password" id="adminPinInput" class="input-control" style="max-width: 250px; text-align: center; font-size: 1.5rem; letter-spacing: 5px;" placeholder="••••" onkeyup="checkAdminPinValue()">
-            </div>
-            <button class="btn btn-dark" onclick="submitAdminPinCheck()">התחבר</button>
-        </div>
-
-        <!-- תוכן פאנל מנהל לאחר פתיחה מאובטחת -->
-        <div id="adminContentView" style="display: none;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #e2e8f0; padding-bottom: 15px; margin-bottom: 25px;">
-                <h2>⚙️ פאנל מנהל</h2>
-                <button class="btn btn-secondary" onclick="lockAdminPanel()">🔒 נעל פאנל</button>
-            </div>
-
-            <!-- אינדיקטור מצב חיבור (גלוי רק למנהל) -->
-            <div class="sync-indicator-container" style="margin-bottom: 20px; justify-content: flex-start;">
-                <div id="cloudSyncStatus">
-                    <span id="cloudSyncDot"></span>
-                    <span id="cloudSyncText">מתחבר לענן הסדנה...</span>
-                </div>
-            </div>
-
-            <!-- הגדרות וכלי ניהול הסדנה -->
-            <div class="admin-control-grid" style="margin-bottom: 30px;">
-
-                <!-- כרטיס הגדרת כמות צוותים -->
-                <div class="admin-card" style="border-top-color: var(--taxi-yellow); margin-bottom: 0;">
-                    <h3>👥 הגדרת כמות צוותים כיתתית</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">קבעו את כמות הצוותים הפעילים בסדנה הנוכחית. בחירה זו משפיעה ישירות על אפשרויות בחירת הקבוצות של הסטודנטים בעמדה ועל ה-HQ:</p>
-                    <select id="teamCountConfigInput" class="input-control" onchange="onAdminTeamCountChange()">
-                        <option value="4">4 צוותים (Customers, Drivers, Dispatchers, Management)</option>
-                        <option value="6" selected>6 צוותים (+ Service, Maintenance)</option>
-                        <option value="8">8 צוותים (+ Finance, Safety & Compliance)</option>
-                    </select>
-                </div>
-
-                <!-- כרטיס הגדרת משך המשחק -->
-                <div class="admin-card" style="border-top-color: var(--blue-info); margin-bottom: 0;">
-                    <h3>⏱️ הגדרת משך המשמרת</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">קבעו כמה זמן תימשך משמרת כל צוות. האירועים יתפזרו לאורך הזמן לפי הקצב שתגדירו בכרטיס האירועים:</p>
-                    <select id="gameDurationConfigInput" class="input-control" onchange="onAdminGameDurationChange()">
-                        <option value="10" selected>10 דקות (ברירת מחדל)</option>
-                        <option value="15">15 דקות</option>
-                        <option value="20">20 דקות</option>
-                        <option value="25">25 דקות</option>
-                        <option value="30">30 דקות</option>
-                        <option value="45">45 דקות</option>
-                        <option value="60">60 דקות (שעה)</option>
-                    </select>
-                </div>
-
-                <!-- כרטיס הגדרת אירועים -->
-                <div class="admin-card" style="border-top-color: var(--purple-holder); margin-bottom: 0;">
-                    <h3>🎲 הגדרת אירועים</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">האירוע הראשון מופיע אוטומטית אחרי 10 שניות. קבעו את הקצב בין האירועים וכמה אירועים יופיעו. כל צוות יקבל אירועים רלוונטיים למדדים שלו:</p>
-                    
-                    <div style="background:#eef6ff; border:1px solid #bcdcff; border-radius:8px; padding:10px; margin-bottom:12px; font-size:0.85rem; color:#1a5b9e;">
-                        ⏳ <strong>אירוע ראשון:</strong> 10 שניות מתחילת המשמרת (קבוע)
-                    </div>
-                    <!-- שדה מוסתר לתאימות: זמן ההתחלה קבוע ל-10 שניות -->
-                    <select id="eventStartConfigInput" style="display:none;"><option value="0.1667" selected>10s</option></select>
-
-                    <label style="font-size: 0.85rem; font-weight: bold; color: #444;">⏱️ קצב בין אירועים (דקות):</label>
-                    <select id="eventIntervalConfigInput" class="input-control" style="margin-bottom: 12px;">
-                        <option value="1">1 דקה</option>
-                        <option value="2">2 דקות</option>
-                        <option value="3" selected>3 דקות</option>
-                        <option value="4">4 דקות</option>
-                        <option value="5">5 דקות</option>
-                        <option value="7">7 דקות</option>
-                        <option value="10">10 דקות</option>
-                    </select>
-
-                    <label style="font-size: 0.85rem; font-weight: bold; color: #444;">🔢 מספר אירועים בסך הכל:</label>
-                    <select id="eventCountConfigInput" class="input-control">
-                        <option value="1">1 אירוע</option>
-                        <option value="2">2 אירועים</option>
-                        <option value="3" selected>3 אירועים</option>
-                        <option value="4">4 אירועים</option>
-                        <option value="5">5 אירועים</option>
-                        <option value="6">6 אירועים</option>
-                        <option value="7">7 אירועים</option>
-                        <option value="8">8 אירועים</option>
-                        <option value="9">9 אירועים</option>
-                        <option value="10">10 אירועים (כל הבנק)</option>
-                    </select>
-                </div>
-
-                <!-- כרטיס איפוס קשיח -->
-                <div class="admin-card" style="border-top-color: var(--red-danger); margin-bottom: 0;">
-                    <h3>🧹 איפוס מערכת קשיח (Hard Reset)</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">פעולה זו מוחקת את כל נתוני המשחק, ההיסטוריה וההחלטות של כל הצוותים הן מהענן והן מהמכשיר הנוכחי, ומחזירה את המערכת למצבה ההתחלתי.</p>
-                    <button class="btn btn-danger" style="width: 100%;" onclick="executeHardResetEverything()">🧹 איפוס קשיח מיידי</button>
-                <!-- כפתור איפוס מצגת -->
-                    <button class="btn" onclick="resetPresentationFromAdmin()" style="
-                     width: 100%;
-                     background: linear-gradient(135deg, #a855f7, #7c3aed);
-                     color: white;
-                     border: none;
-                     padding: 12px;
-                     border-radius: 8px;
-                     cursor: pointer;
-                     font-weight: bold;
-                     font-size: 1rem;
-                     margin-top: 10px;
-                     ">
-                     🎬 איפוס מצגת תוצאות
-                    </button>
-                </div>
-
-                <!-- כרטיס הזרקת נתוני דמו -->
-                <div class="admin-card" style="border-top-color: var(--green-success); margin-bottom: 0;">
-                    <h3>📊 הזרקת נתוני דמו (Lecturer Demo Mode)</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">הזריקו מיידית נתוני משחק פיקטיביים לענן עבור הצוותים, לצורך הדגמת לוח המטה המרכזי ודרך ניתוח המדדים של כולם.</p>
-                    <button class="btn btn-success" style="width: 100%;" onclick="injectLecturerDemoData()">📊 הזרק נתוני דמו כיתתיים</button>
-                </div>
-
-                <!-- כרטיס סטטיסטיקה וניהול פנימי -->
-                <div class="admin-card" style="border-top-color: var(--blue-info); margin-bottom: 0;">
-                    <h3>📡 ניהול בסיס נתונים</h3>
-                    <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">צפייה ישירה במספר הצוותים השמורים כעת בזיכרון המקומי ובסנכרון הענן של המערכת:</p>
-                    <div style="background: white; padding: 12px; border-radius: 6px; margin-bottom: 15px; font-weight: bold; border: 1px solid #e2e8f0;">
-                        סטטוס: <span id="adminDatabaseStatusText">0 צוותים שמורים</span>
-                    </div>
-                    <button class="btn btn-primary" style="width: 100%;" onclick="refreshAdminDatabaseStats()">🔄 רענן סטטיסטיקה</button>
-                </div>
-
-            </div>
-
-            <!-- לוח מטה מרכזי (HQ) מובנה בתוך הניהול -->
-            <div style="border-top: 3px double #cbd5e1; padding-top: 30px; margin-top: 20px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; margin-bottom: 25px; background: #fffdf5; border: 2px solid #f1c40f; padding: 20px; border-radius: 12px;">
-                    <div style="max-width: 750px;">
-                        <h3 style="color: var(--dark-blue); font-size: 1.4rem; display: flex; align-items: center; gap: 8px;">👑 לוח המטה המרכזי (Classroom HQ Dashboard)</h3>
-                        <p style="font-size: 0.95rem; color: #555; margin-top: 5px; line-height: 1.5;">
-                            כלי זה נועד להקרנה ישירה על מקרן כיתתי מתוך פאנל המנחה. הנתונים של כל הצוותים המשחקים בכיתה מסתנכרנים כאן בזמן אמת ללא צורך בריענון ידני.
-                        </p>
-                    </div>
-                    <div style="display: flex; gap: 10px;">
-                        <button class="btn btn-primary" style="font-size: 0.95rem;" onclick="renderHqDashboardGrid()">🔄 רענן נתוני כיתה</button>
-                        <button class="btn btn-success" style="font-size: 0.95rem;" onclick="exportToCSVReport()">📥 ייצא דוח פעילות ל-Excel</button>
-                    </div>
-                </div>
-
-                <!-- 📋 טבלת מעקב מפורטת וניהול החלטות -->
-                <div style="background: white; border: 1px solid #cbd5e1; border-radius: 12px; padding: 20px; margin-bottom: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.02); overflow-x: auto;">
-                    <h3 style="color: var(--dark-blue); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">📋 דוח אינטגרטיבי - תחקיר אסטרטגי ומשברים</h3>
-                    <p style="font-size: 0.85rem; color: #666; margin-bottom: 15px;">צפייה ישירה ומעקב מורחב של המנחה: באילו אסטרטגיות ויעדים (ISO 9001) בחרו הצוותים, ומה היו נימוקי מערכת האיכות שלהם בזמן טיפול במשברים.</p>
-
-                    <table class="sim-table" style="width: 100%; min-width: 1000px;">
-                        <thead>
-                            <tr>
-                                <th style="width: 12%;">צוות</th>
-                                <th style="width: 12%;">אסטרטגיה מונעת</th>
-                                <th style="width: 20%;">יעדי איכות (לפני משחק)</th>
-                                <th style="width: 20%;">אירועים ומשברים</th>
-                                <th style="width: 10%; text-align: center;">החלטה</th>
-                                <th style="width: 16%;">נימוק מענה (ISO 9001)</th>
-                                <th style="width: 10%; text-align: center;">מדדים סופיים</th>
-                            </tr>
-                        </thead>
-                        <tbody id="detailedDebriefTableBody">
-                            <!-- יטען דינמית -->
-                        </tbody>
-                    </table>
-                </div>
-
-                <!-- כרטיסי סיכום גרפיים לכל קבוצה -->
-                <div style="margin-top: 20px;">
-                    <h3 style="color: var(--dark-blue); margin-bottom: 15px;">📊 כרטיסי סיכום קבוצתיים (Team Scorecards)</h3>
-                    <div id="hqDashboardGrid" class="admin-control-grid">
-                        <!-- נתונים יטענו ישירות מהענן / LocalStorage -->
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-    </div>
 
     <!-- פוטנוט תחתון קבוע עם קרדיט הפיתוח -->
     <footer>
@@ -2246,6 +2315,18 @@
             }
             console.log('🧹 Worksheets cleared');
         } catch (err) { console.error('Clear worksheets failed:', err); }
+    };
+
+    // 🧹 ניקוי אירועי שרשרת (סבב 3) — מונע הצטברות בענן
+    window.qcClearChainEvents = async function() {
+        if (!currentUser || !db) return;
+        try {
+            const snap = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'chainEvents'));
+            for (const d of snap.docs) {
+                await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'chainEvents', d.id));
+            }
+            console.log('🧹 Chain events cleared');
+        } catch (err) { console.error('Clear chain events failed:', err); }
     };
 
     // 📊 הגדרות המדדים, בעלי העניין והאייקונים התואמים
@@ -2500,12 +2581,24 @@
     let activeGlobalInvestments = [];
     const ADMIN_PIN_CODE = "1234";
 
-    // אתחול תשתיות ענן פנימיות
-    const appId = 'quickcab-workshop';
+    // ⚙️ מצב דמו: ערכי ברירת מחדל קבועים (במקום הגדרות שהמנהל היה קובע בפאנל הניהול)
+    const DEMO_CONFIG = {
+        teamCount: 6,           // כמות קבוצות העניין הזמינות לבחירה
+        gameDurationMinutes: 3, // משך משמרת פעילה (דקות)
+        eventIntervalMinutes: 1,// קצב הופעת אירועים (דקות) — אירוע כל דקה
+        eventCount: 3           // מספר אירועים במשמרת
+    };
+
+    // אתחול תשתיות ענן פנימיות (מצב דמו: לענן תפקיד אופציונלי בלבד לשמירת היסטוריה/אירועי שרשרת — אין שום שער מנהל)
+    const appId = 'quickcab-workshop-demo';
     let db = null;
     let auth = null;
     let currentUser = null;
     let firebaseUnsubscribe = null;
+    let managerApproved = true; // מצב דמו: עמדת העבודה פתוחה תמיד, אין מנהל שמאשר
+    let currentRound = 1; // סבב נוכחי: 1 (למידה) / 2 (שיפור) / 3 (בעלי עניין) — המשתתף מתקדם בעצמו
+    let simulatorToolUnlocked = true; // מצב דמו: הסימולטור פתוח תמיד
+    let sharedGameDurationMinutes = null; // לא רלוונטי במצב דמו (אין משך משמרת גלובלי שנקבע ע"י מנהל)
 
     async function setupSyncSystem() {
         try {
@@ -2521,67 +2614,444 @@
             if (user) {
                 setOnlineModeIndicator();
                 startLiveCloudSyncListener();
+                // מצב דמו: אין מאזין לשער מנהל — הגישה תמיד פתוחה
             } else {
                 setOfflineModeIndicator();
             }
         });
     }
 
+    // מעדכן את תצוגת הסבב הנוכחי בכל המכשירים
+    function applyRoundState(round) {
+        currentRound = round;
+        const labels = document.querySelectorAll('.round-indicator');
+        labels.forEach(el => {
+            if (round === 3) {
+                el.innerHTML = '🤝 סבב 3 — ניהול בעלי עניין';
+                el.style.background = '#f3e8ff';
+                el.style.color = '#6b21a8';
+            } else if (round === 2) {
+                el.innerHTML = '🟢 סבב 2 — שיפור';
+                el.style.background = '#dcfce7';
+                el.style.color = '#166534';
+            } else {
+                el.innerHTML = '🔵 סבב 1 — למידה';
+                el.style.background = '#dbeafe';
+                el.style.color = '#1e40af';
+            }
+        });
+        // עדכון תווית בפאנל המנהל
+        const adminLbl = document.getElementById('adminCurrentRound');
+        if (adminLbl) adminLbl.innerText = round;
+
+        // הצגה/הסתרה של מסך בעלי העניין (סבב 3)
+        const stakeholderPanel = document.getElementById('stakeholderRound');
+        const normalSetup = document.getElementById('teamSetupBlock');
+        if (stakeholderPanel) {
+            if (round === 3) {
+                stakeholderPanel.style.display = 'block';
+                const gameplay = document.getElementById('teamGameplayBlock');
+                if (gameplay) gameplay.style.display = 'none';
+                // בסבב 3 הצוות כבר בחר קבוצה בסבבים הקודמים — מסתירים את בחירת הצוות
+                if (normalSetup) normalSetup.style.display = 'none';
+                initStakeholderRound();
+            } else {
+                stakeholderPanel.style.display = 'none';
+                if (normalSetup && document.getElementById('teamGameplayBlock').style.display === 'none') {
+                    normalSetup.style.display = 'block';
+                }
+            }
+        }
+
+        // בסבב 2 — הצגת תוצאות סבב 1 כנקודת השוואה
+        const card = document.getElementById('round1ComparisonCard');
+        if (card) {
+            if (round === 2) {
+                let r1 = null;
+                try {
+                    const tid = teamState ? teamState.teamId : null;
+                    if (tid) {
+                        const raw = localStorage.getItem(`qc_round_${tid}_1`);
+                        if (raw) r1 = JSON.parse(raw);
+                    }
+                } catch(e) {}
+                if (r1) {
+                    const lbls = { satisfaction:"שביעות רצון", sla:"SLA", profitability:"רווחיות", morale:"מורל", cyber:"אבטחה" };
+                    const grid = document.getElementById('round1KpiDisplay');
+                    grid.innerHTML = Object.keys(r1).map(k =>
+                        `<div style="background:white; border:1px solid #fde68a; border-radius:8px; padding:8px; text-align:center;">
+                            <div style="font-size:0.8rem; color:#888;">${lbls[k]||k}</div>
+                            <div style="font-size:1.3rem; font-weight:bold; color:var(--dark-blue);">${r1[k]}</div>
+                        </div>`).join('');
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    }
+
+    // ===== סבב 3: ניהול בעלי עניין =====
+    function applySimulatorToolState(unlocked) {
+        simulatorToolUnlocked = unlocked;
+        const status = document.getElementById('adminSimStatus');
+        if (status) {
+            status.innerHTML = unlocked ? '🔓 פתוח' : '🔒 נעול';
+            status.style.color = unlocked ? '#16a34a' : '#dc2626';
+        }
+    }
+
+    const STAKEHOLDERS = [
+        { id:'drivers',    icon:'🚗', name:'נהגים',     expectation:'שכר הוגן ותנאי עבודה',     good:'מודל תמריצים בשעות עומס',    cost:25, bad:'מאמץ מינימלי (חוסך תקציב) → סיכון שביתה' },
+        { id:'customers',  icon:'👥', name:'לקוחות',     expectation:'מחיר הוגן ושירות אמין',     good:'פיצוי אוטומטי על עיכובים',  cost:20, bad:'מאמץ מינימלי (חוסך תקציב) → נטישה למתחרים' },
+        { id:'regulator',  icon:'🏛️', name:'רגולטור/עירייה', expectation:'עמידה בתקני זיהום ובטיחות', good:'התאמת הצי לתקן ירוק',       cost:25, bad:'מאמץ מינימלי (חוסך תקציב) → קנסות והגבלות' },
+        { id:'investors',  icon:'📈', name:'משקיעים',    expectation:'רווחיות וצמיחה יציבה',       good:'תוכנית צמיחה מאוזנת',        cost:15, bad:'מאמץ מינימלי (חוסך תקציב) → משיכת השקעות' },
+        { id:'employees',  icon:'🎧', name:'עובדי שירות', expectation:'סביבת עבודה ותמיכה',         good:'הכשרה וכלים דיגיטליים',     cost:20, bad:'מאמץ מינימלי (חוסך תקציב) → שחיקה ותחלופה' },
+        { id:'community',  icon:'🌍', name:'קהילה',       expectation:'אחריות חברתית וסביבתית',     good:'יוזמות קהילתיות ירוקות',    cost:15, bad:'מאמץ מינימלי (חוסך תקציב) → פגיעה במוניטין' }
+    ];
+    // סה"כ עלות לבחור "טוב" בכל בעלי העניין = 120 נק' — מעל לתקציב הכולל (100).
+    // לא ניתן עוד "לכסות את כולם" — חייבים לתעדף, וזו בדיוק הלמידה.
+
+    const STAKE_INVESTMENTS = [
+        { id:'welfare',  name:'🚗 קרן רווחה ובונוסים לנהגים',     cost:40, benefit:'מונע שביתות, משפר זמני מענה' },
+        { id:'compensation', name:'👥 קמפיין פיצוי ללקוחות',       cost:30, benefit:'מעלה שביעות רצון מיידית' },
+        { id:'green',    name:'🏛️ התאמת הצי לתקן זיהום עירוני',    cost:30, benefit:'מונע קנסות רגולטוריים' },
+        { id:'training', name:'🎧 הכשרת עובדי שירות',              cost:20, benefit:'מפחית שחיקה ותחלופה' },
+        { id:'community',name:'🌍 יוזמה קהילתית-סביבתית',          cost:15, benefit:'משפר מוניטין ציבורי' }
+    ];
+
+    let stakeBudget = 100;
+    let stakeSelectedInvest = new Set();
+    let stakeMapChoices = {};
+
+    // בעלי העניין הקריטיים לכל קבוצה (לפי teamId) — נותן ייחודיות (גישה ב')
+    const TEAM_CRITICAL_STAKEHOLDERS = {
+        1: ['customers', 'employees', 'community'],   // Customers
+        2: ['drivers', 'regulator', 'investors'],     // Drivers
+        3: ['drivers', 'customers', 'regulator'],     // Dispatchers
+        4: ['investors', 'regulator', 'drivers'],     // Management
+        5: ['customers', 'employees', 'drivers'],     // Service & Support
+        6: ['regulator', 'drivers', 'community'],      // Maintenance
+        7: ['investors', 'regulator', 'community'],    // Finance
+        8: ['regulator', 'community', 'customers']     // Safety & Compliance
+    };
+
+    function initStakeholderRound() {
+        // הפעלת מאזין אירועי השרשרת (אינטראקציה חיה)
+        startChainListener();
+
+        // בעלי העניין הקריטיים של הקבוצה הנוכחית
+        const myTeamId = teamState ? teamState.teamId : null;
+
+        // אם הצוות עדיין לא בחר קבוצה — מבקשים לבחור קודם
+        const headEl = document.getElementById('stakeholderTeamHead');
+        if (!myTeamId) {
+            if (headEl) {
+                headEl.innerHTML = `ℹ️ <strong>מפה כללית.</strong> בעלי העניין הקריטיים מודגשים לפי הקבוצה שבחרתם בסבבים הקודמים. אם הגעתם ישירות לכאן, תוכלו למפות באופן כללי.`;
+                headEl.style.background = '#fef3c7';
+                headEl.style.borderRightColor = '#f59e0b';
+            }
+        } else if (headEl) {
+            headEl.style.background = '#faf5ff';
+            headEl.style.borderRightColor = 'var(--purple-holder)';
+        }
+
+        const critical = (myTeamId && TEAM_CRITICAL_STAKEHOLDERS[myTeamId]) ? TEAM_CRITICAL_STAKEHOLDERS[myTeamId] : [];
+
+        // הצגת שם הקבוצה והדגשה
+        const myProfile = (myTeamId && allPossibleProfiles[myTeamId]) ? allPossibleProfiles[myTeamId] : null;
+        if (headEl && myProfile) {
+            const critNames = critical.map(cid => {
+                const s = STAKEHOLDERS.find(x => x.id === cid);
+                return s ? (s.icon + ' ' + s.name) : cid;
+            }).join('، ');
+            headEl.innerHTML = `<strong>${myProfile.icon} ${myProfile.name}</strong> — בעלי העניין הקריטיים שלכם: <strong style="color:#6b21a8;">${critNames}</strong>. בחירה נכונה עבורם משפיעה כפול על הציון!`;
+        }
+
+        // בניית מפת ההשפעות (עם הדגשת בעלי העניין הקריטיים של הקבוצה)
+        const mapGrid = document.getElementById('stakeholderMapGrid');
+        if (mapGrid) {
+            mapGrid.innerHTML = STAKEHOLDERS.map(s => {
+                const isCritical = critical.includes(s.id);
+                const cardStyle = isCritical
+                    ? 'border:2px solid #c084fc; background:#faf5ff; border-radius:8px; padding:12px; margin-bottom:10px;'
+                    : 'border:1px solid #e2e8f0; border-radius:8px; padding:12px; margin-bottom:10px;';
+                const badge = isCritical ? '<span style="background:#c084fc; color:white; font-size:0.7rem; padding:2px 8px; border-radius:10px;">⭐ קריטי עבורכם</span>' : '';
+                return `
+                <div style="${cardStyle}">
+                    <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
+                        <span style="font-size:1.4rem;">${s.icon}</span>
+                        <strong style="color:var(--dark-blue);">${s.name}</strong>
+                        ${badge}
+                        <span style="color:#888; font-size:0.85rem;">— ציפייה: ${s.expectation}</span>
+                    </div>
+                    <div style="display:flex; gap:8px; flex-wrap:wrap;">
+                        <label style="flex:1; min-width:200px; display:flex; align-items:center; gap:6px; background:#f0fdf4; padding:8px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+                            <input type="radio" name="stake_${s.id}" value="good" onchange="stakeMapChoose('${s.id}','good')"> ✅ ${s.good} <span style="opacity:0.65; white-space:nowrap;">(עלות: ${s.cost} נק')</span>
+                        </label>
+                        <label style="flex:1; min-width:200px; display:flex; align-items:center; gap:6px; background:#fef2f2; padding:8px; border-radius:6px; cursor:pointer; font-size:0.85rem;">
+                            <input type="radio" name="stake_${s.id}" value="bad" onchange="stakeMapChoose('${s.id}','bad')"> 🔹 ${s.bad} <span style="opacity:0.65; white-space:nowrap;">(עלות: 0 נק')</span>
+                        </label>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        // בניית רשימת ההשקעות
+        const invList = document.getElementById('stakeInvestList');
+        if (invList) {
+            invList.innerHTML = STAKE_INVESTMENTS.map(i => `
+                <div style="display:flex; align-items:center; justify-content:space-between; padding:12px; margin-bottom:8px; border:1px solid #e2e8f0; border-radius:8px;">
+                    <div><strong>${i.name}</strong><br><small style="color:#64748b">${i.benefit} | עלות: ${i.cost} נק'</small></div>
+                    <input type="checkbox" id="stakechk_${i.id}" onchange="stakeToggleInvest('${i.id}',${i.cost})">
+                </div>`).join('');
+        }
+    }
+
+    window.stakeMapChoose = function(id, choice) {
+        const s = STAKEHOLDERS.find(x => x.id === id);
+        const prevChoice = stakeMapChoices[id];
+
+        if (choice === 'good' && prevChoice !== 'good') {
+            if (stakeBudget - s.cost < 0) {
+                alert(`אין מספיק תקציב משותף לבחור "${s.good}" (עולה ${s.cost} נק', נותרו לכם רק ${stakeBudget} נק'). שחררו תקציב מבעל עניין אחר או מהשקעה למטה, או בחרו כאן באפשרות חסכונית יותר.`);
+                const badRadio = document.querySelector(`input[name="stake_${id}"][value="bad"]`);
+                if (badRadio) badRadio.checked = true;
+                stakeMapChoices[id] = 'bad';
+                return;
+            }
+            stakeBudget -= s.cost;
+        } else if (choice === 'bad' && prevChoice === 'good') {
+            stakeBudget += s.cost;
+        }
+
+        stakeMapChoices[id] = choice;
+        const budgetUi = document.getElementById('stakeBudgetUi');
+        if (budgetUi) budgetUi.innerText = stakeBudget;
+    };
+
+    window.stakeToggleInvest = function(id, cost) {
+        const cb = document.getElementById('stakechk_' + id);
+        if (cb.checked) {
+            if (stakeBudget - cost >= 0) { stakeBudget -= cost; stakeSelectedInvest.add(id); }
+            else { cb.checked = false; alert('אין מספיק תקציב!'); }
+        } else { stakeBudget += cost; stakeSelectedInvest.delete(id); }
+        document.getElementById('stakeBudgetUi').innerText = stakeBudget;
+    };
+
+    window.submitStakeholderRound = function() {
+        // חישוב ציון חוסן: מפה נכונה + השקעות, עם משקל כפול לבעלי העניין הקריטיים
+        const totalStake = STAKEHOLDERS.length;
+        const mapped = Object.keys(stakeMapChoices).length;
+
+        if (mapped < totalStake) {
+            showSystemNotification("מפה לא הושלמה", `מיפו ${mapped} מתוך ${totalStake} בעלי עניין. השלימו את כל המפה לפני ההגשה.`, true);
+            return;
+        }
+
+        const myTeamId = teamState ? teamState.teamId : null;
+        const critical = (myTeamId && TEAM_CRITICAL_STAKEHOLDERS[myTeamId]) ? TEAM_CRITICAL_STAKEHOLDERS[myTeamId] : [];
+
+        // ניקוד מפה: בחירה נכונה = נקודות; קריטי = משקל כפול
+        let mapScore = 0, goodChoices = 0, criticalHits = 0;
+        STAKEHOLDERS.forEach(s => {
+            if (stakeMapChoices[s.id] === 'good') {
+                goodChoices++;
+                if (critical.includes(s.id)) { mapScore += 16; criticalHits++; }
+                else { mapScore += 8; }
+            }
+        });
+
+        const investScore = stakeSelectedInvest.size * 7;
+        const resilience = Math.min(100, Math.round(mapScore + investScore));
+
+        let verdict, color;
+        if (resilience >= 80) { verdict = "🟢 חוסן ארגוני גבוה — איזנתם מצוין בין בעלי העניין!"; color = "#166534"; }
+        else if (resilience >= 50) { verdict = "🟡 חוסן בינוני — חלק מבעלי העניין הוזנחו."; color = "#a16207"; }
+        else { verdict = "🔴 חוסן נמוך — התעלמתם מבעלי עניין מרכזיים, החברה חשופה למשברים."; color = "#991b1b"; }
+
+        const resultBox = document.getElementById('stakeholderResult');
+        resultBox.style.display = 'block';
+        resultBox.innerHTML = `
+            <h3 style="border:none; margin:0 0 10px 0; color:${color};">מדד חוסן בעלי עניין: ${resilience}/100</h3>
+            <p style="font-size:1.05rem; color:${color}; font-weight:bold;">${verdict}</p>
+            <p style="color:#666; font-size:0.9rem;">בחרתם ${goodChoices}/${totalStake} פתרונות נכונים (מתוכם ${criticalHits} מבעלי העניין הקריטיים שלכם), והשקעתם ב-${stakeSelectedInvest.size} כרטיסי השקעה חברתית. תקציב משותף שנותר ללא ניצול: ${stakeBudget} נק'.</p>
+        `;
+        resultBox.scrollIntoView({ behavior:'smooth' });
+
+        // שמירת מדד החוסן (משמש כ"מגן" מפני אירועי שרשרת בהמשך) + פירוט מלא להצגה בפאנל המנהל
+        if (teamState) {
+            teamState.stakeholderResult = {
+                resilience, goodChoices, criticalHits, totalStake,
+                investments: Array.from(stakeSelectedInvest),
+                mapChoices: { ...stakeMapChoices },
+                budgetLeft: stakeBudget
+            };
+            teamState.resilience = resilience;
+            syncTeamToCloud('stakeholder');
+        }
+        showSystemNotification("הוגש בהצלחה", `מדד החוסן שלכם: ${resilience}/100`);
+
+        // כפתור מעבר לחדר המצב האינטראקטיבי
+        const startBtn = document.createElement('button');
+        startBtn.className = 'btn btn-primary';
+        startBtn.style.cssText = 'width:100%; font-size:1.1rem; margin-top:16px;';
+        startBtn.innerHTML = '▶️ התחל משמרת אינטראקטיבית (חזרה לחדר המצב)';
+        startBtn.onclick = startInteractiveShift;
+        resultBox.appendChild(startBtn);
+    };
+
+    // מעבר מסבב 3 לחדר המצב האינטראקטיבי — ממשיכים עם אותם KPIs
+    function startInteractiveShift() {
+        if (!teamState) {
+            showSystemNotification("אין צוות", "יש לבחור קבוצה תחילה (בסבבים הקודמים).", true);
+            return;
+        }
+        document.getElementById('stakeholderRound').style.display = 'none';
+        document.getElementById('teamSetupBlock').style.display = 'none';
+        document.getElementById('teamGameplayBlock').style.display = 'block';
+
+        const profile = allPossibleProfiles[teamState.teamId];
+        document.getElementById('activePlayingTeamTitle').innerText = `${profile.icon} חדר מצב אינטראקטיבי - ${teamState.name}`;
+        renderTeamKPIBars();
+        initLiveQualityControl();
+        showSystemNotification("משמרת אינטראקטיבית", "ההחלטות של צוותים אחרים ישפיעו עליכם! מדד החוסן שלכם (" + (teamState.resilience||0) + ") מגן עליכם מפני הפגיעות.");
+
+        // 🔗 שידור אירוע שרשרת לצוות אחר
+        broadcastChainEvent();
+    }
+    window.startInteractiveShift = startInteractiveShift;
+
+    // ===== אינטראקציה חיה בין הקבוצות (סבב 3) =====
+    // מאגר אירועי שרשרת מקצועיים — כל אחד מלמד עיקרון בניהול איכות ופריון
+    const CHAIN_EVENTS = [
+        { decision: "קיצוץ בעלויות תפעול",          impact: "פגיעה בזמינות המשאבים שלכם",        kpi: "sla",          principle: "לקוח פנימי (Internal Customer) — קיצוץ במחלקה אחת פוגע בשרשרת" },
+        { decision: "האצת קצב העבודה",               impact: "עומס יתר ושחיקה אצלכם",            kpi: "morale",       principle: "תורת האילוצים (TOC) — האצה בחוליה אחת מעמיסה על הבאה אחריה" },
+        { decision: "שינוי מפרט השירות",             impact: "צורך בהתאמה מהירה של התהליכים שלכם", kpi: "satisfaction", principle: "שונות בתהליך (Variation) — שינוי לא מתואם מגדיל אי-ודאות" },
+        { decision: "העלאת מחירים ללקוח",            impact: "גל תלונות ולחץ על מערך השירות שלכם", kpi: "satisfaction", principle: "קול הלקוח (VOC) — החלטה פיננסית מתגלגלת לחווית הלקוח" },
+        { decision: "צמצום מלאי חלפים",              impact: "עיכוב בתחזוקה ופגיעה ב-SLA שלכם",   kpi: "sla",          principle: "Just-In-Time — צמצום מלאי אגרסיבי יוצר סיכון שרשרת אספקה" },
+        { decision: "דחיית השקעה בהדרכה",            impact: "ירידה באיכות וביצועי הצוות שלכם",   kpi: "morale",       principle: "פיתוח הון אנושי — חיסכון בהדרכה פוגע בפריון לאורך זמن" },
+        { decision: "מיקור-חוץ של תהליך",            impact: "אובדן שליטה ותלות חיצונית אצלכם",   kpi: "profitability",principle: "ניהול ספקים — מיקור חוץ ללא בקרה מעביר סיכון איכות" },
+        { decision: "האצת הטמעת טכנולוגיה חדשה",     impact: "התנגדות והתאמה כפויה אצל הצוות שלכם", kpi: "morale",       principle: "ניהול שינוי — הטמעה מהירה מדי מתעלמת מהמערכת האנושית" }
+    ];
+
+    let chainListenerStarted = false;
+    let seenChainEvents = new Set();
+
+    // משדר אירוע שרשרת אקראי לכלל הצוותים
+    async function broadcastChainEvent() {
+        if (!currentUser || !db || !teamState) return;
+        try {
+            const ev = CHAIN_EVENTS[Math.floor(Math.random() * CHAIN_EVENTS.length)];
+            const id = 'chain_' + teamState.teamId + '_' + Date.now();
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'chainEvents', id);
+            await setDoc(ref, {
+                fromTeamId: teamState.teamId,
+                fromTeamName: teamState.name,
+                fromIcon: teamState.icon,
+                decision: ev.decision,
+                impact: ev.impact,
+                kpi: ev.kpi,
+                principle: ev.principle,
+                createdAt: Date.now()
+            });
+            console.log('🔗 Chain event broadcast:', ev.decision);
+        } catch (err) {
+            console.error('Chain broadcast failed:', err.code, err.message);
+        }
+    }
+
+    // מאזין לאירועי שרשרת שמגיעים מצוותים אחרים
+    function startChainListener() {
+        if (chainListenerStarted || !currentUser || !db) return;
+        chainListenerStarted = true;
+        const q = collection(db, 'artifacts', appId, 'public', 'data', 'chainEvents');
+        onSnapshot(q, (snap) => {
+            snap.forEach(d => {
+                const data = d.data();
+                // מציגים רק אירועים שהגיעו מצוות אחר, שעוד לא ראינו, ורק בסבב 3
+                if (currentRound === 3 && teamState && data.fromTeamId !== teamState.teamId && !seenChainEvents.has(d.id)) {
+                    // מתעלמים מאירועים ישנים (לפני שהצוות נכנס) — רק 90 שניות אחרונות
+                    if (Date.now() - data.createdAt < 90000) {
+                        seenChainEvents.add(d.id);
+                        showChainEvent(data);
+                    } else {
+                        seenChainEvents.add(d.id);
+                    }
+                }
+            });
+        }, (err) => console.error('Chain listener error:', err.code, err.message));
+    }
+
+    // מציג אירוע שרשרת נכנס לצוות
+    function showChainEvent(data) {
+        // בוחרים מיכל: בחדר המצב אם פעיל, אחרת במסך בעלי העניין
+        let container = null;
+        const gameplay = document.getElementById('teamGameplayBlock');
+        if (gameplay && gameplay.style.display !== 'none') {
+            container = document.getElementById('chainEventsAreaGame');
+        }
+        if (!container) container = document.getElementById('chainEventsArea');
+        if (!container) return;
+
+        // החלת נזק לפי מדד החוסן: חוסן גבוה → נזק קטן
+        const resilience = (teamState && teamState.resilience) ? teamState.resilience : 0;
+        const baseDamage = 12;
+        const damage = Math.max(2, Math.round(baseDamage * (1 - resilience / 100)));
+        if (teamState && teamState.kpi && teamState.kpi[data.kpi] !== undefined) {
+            teamState.kpi[data.kpi] = Math.max(0, teamState.kpi[data.kpi] - damage);
+            if (typeof renderTeamKPIBars === 'function') renderTeamKPIBars();
+        }
+
+        const kpiLabels = { satisfaction:"שביעות רצון", sla:"SLA", profitability:"רווחיות", morale:"מורל", cyber:"אבטחה" };
+        const card = document.createElement('div');
+        card.style.cssText = "background:#fff7ed; border:2px solid #fb923c; border-radius:12px; padding:16px; margin-bottom:12px; animation:wizFade 0.4s ease;";
+        card.innerHTML = `
+            <div style="display:flex; align-items:center; gap:8px; margin-bottom:8px;">
+                <span style="font-size:1.5rem;">📨</span>
+                <strong style="color:#c2410c;">אירוע שרשרת (Internal Customer Impact)</strong>
+            </div>
+            <p style="margin:6px 0; font-size:0.95rem;"><strong>${data.fromIcon} צוות ${data.fromTeamName}</strong> קיבל החלטה: <strong>"${data.decision}"</strong></p>
+            <p style="margin:6px 0; font-size:0.95rem; color:#9a3412;">⚠️ כלקוח פנימי שלהם, אתם מושפעים: <strong>${data.impact}</strong> (פגיעה של ${damage}- ב${kpiLabels[data.kpi] || data.kpi}).</p>
+            <p style="margin:6px 0; font-size:0.82rem; color:#16a34a;">🛡️ מדד החוסן שלכם (${resilience}) ריכך את הפגיעה.</p>
+            <p style="margin:6px 0; font-size:0.82rem; color:#666; font-style:italic;">💡 עיקרון: ${data.principle}</p>
+            <textarea class="input-control" rows="2" placeholder="כיצד תגיבו? (תהליך CAPA מקוצר)" style="margin-top:8px; font-size:0.9rem;"></textarea>
+            <button class="btn btn-success" style="width:100%; margin-top:8px;" onclick="this.parentElement.style.opacity='0.5'; this.disabled=true; this.innerText='✅ הטיפול נרשם'; window.qcChainRespond && window.qcChainRespond('${data.kpi}');">✅ אשר תגובת CAPA</button>
+        `;
+        container.prepend(card);
+        // התראה
+        showSystemNotification("📨 אירוע שרשרת חדש", `צוות ${data.fromTeamName} קיבל החלטה שמשפיעה עליכם!`, true);
+    }
+
+    // תגובת הצוות לאירוע שרשרת — משקמת חלק מהפגיעה
+    window.qcChainRespond = function(kpiKey) {
+        if (teamState && teamState.kpi && teamState.kpi[kpiKey] !== undefined) {
+            teamState.kpi[kpiKey] = Math.min(100, teamState.kpi[kpiKey] + 5);
+            if (typeof renderTeamKPIBars === 'function') renderTeamKPIBars();
+            syncTeamToCloud('stakeholder');
+        }
+    };
+
+    // מצב דמו: עמדת העבודה תמיד פתוחה — הפונקציה נשארת לתאימות עם קוד קיים אך לא חוסמת איש
+    function applyGateState(unlocked) {
+        managerApproved = true; // בדמו: תמיד פתוח, אין מנהל שמאשר
+    }
+
     function setOnlineModeIndicator() {
-        const dot = document.getElementById('cloudSyncDot');
-        const text = document.getElementById('cloudSyncText');
-        if (!dot || !text) return;
-        dot.style.background = '#2ecc71';
-        dot.classList.add('dot-pulsing');
-        text.innerText = '⚡ ענן כיתתי פעיל (זמן אמת)';
+        // מצב דמו: אין פאנל מנהל שמציג סטטוס ענן — הפעולה אינה נדרשת
     }
 
     function setOfflineModeIndicator() {
-        const dot = document.getElementById('cloudSyncDot');
-        const text = document.getElementById('cloudSyncText');
-        if (!dot || !text) return;
-        dot.style.background = '#94a3b8';
-        dot.classList.remove('dot-pulsing');
-        text.innerText = '💾 עבודה מקומית (מחשב זה בלבד)';
+        // מצב דמו: עובדים תמיד באופן מקומי/עצמאי, ללא תלות בפאנל מנהל
+        applyGateState(true);
+        applySimulatorToolState(true);
     }
 
-    // מאזין בזמן אמת לשינויים בענן
+    // מצב דמו: אין פאנל מנהל/לוח מטה שצריך לעדכן בזמן אמת, כך שמאזין זה אינו נדרש
     function startLiveCloudSyncListener() {
-        if (!currentUser || !db) {
-            console.warn("⚠️ Listener not started — no user or db", { currentUser: !!currentUser, db: !!db });
-            return;
-        }
-        
-        const q = collection(db, 'artifacts', appId, 'public', 'data', 'results');
-        console.log("👂 Starting real-time listener on:", `artifacts/${appId}/public/data/results`);
-        
-        if (firebaseUnsubscribe) firebaseUnsubscribe();
-
-        firebaseUnsubscribe = onSnapshot(q, (snapshot) => {
-            console.log(`📥 Firebase update received: ${snapshot.size} team(s) in cloud`);
-            const activeDocIds = new Set();
-            snapshot.forEach((doc) => {
-                const data = doc.data();
-                activeDocIds.add(String(data.teamId));
-                localStorage.setItem(`qc_result_team_${data.teamId}`, JSON.stringify(data));
-                console.log(`   ✓ Team ${data.teamId} (${data.name}) synced`);
-            });
-
-            for (let i = 1; i <= 8; i++) {
-                if (!activeDocIds.has(String(i))) {
-                    localStorage.removeItem(`qc_result_team_${i}`);
-                }
-            }
-
-            const adminOpen = document.getElementById('adminContentView').style.display === 'block';
-            console.log(`   → Admin panel open: ${adminOpen} → ${adminOpen ? 'refreshing dashboard' : 'data cached'}`);
-            if (adminOpen) {
-                renderHqDashboardGrid();
-            }
-            refreshAdminDatabaseStats();
-        }, (error) => {
-            console.error("❌ Cloud synchronization error:", error.code, error.message);
-        });
+        // no-op בגרסת הדמו — המשתתף היחיד אינו זקוק לסנכרון חוצה-צוותים
     }
 
     // מערכת התראות חלקה פנימית ללא alert
@@ -2639,24 +3109,68 @@ window.toggleFaqItem = function(element) {
     element.classList.toggle('open');
 }
 
-    // ניווט ומעברי מסכים
+    // ניווט ומעברי מסכים — מצב דמו: אין שער מנהל, המעבר פתוח תמיד
+    window.markGuidelinesDone = function() { guidelinesCompleted = true; };
+
     function switchActiveTab(tabId) {
         document.querySelectorAll('.view-panel').forEach(panel => panel.classList.remove('active'));
         document.getElementById(`${tabId}_panel`).classList.add('active');
-        
+
         if (tabId === 'team_station') {
             adjustTeamDropdownOptions();
-        } else if (tabId === 'admin_control') {
-            refreshAdminDatabaseStats();
-            if (document.getElementById('adminContentView').style.display === 'block') {
-                renderHqDashboardGrid();
-            }
         }
+
+        updateDemoGuide(tabId);
     }
+
+    // 🧭 מנחה וירטואלי: מעדכן את הפס הקבוע + מציג טוסט הכוונה בכל מעבר שלב משמעותי
+    function updateDemoGuide(tabId) {
+        const banner = document.getElementById('demoGuideBanner');
+        const titleEl = document.getElementById('demoGuideTitle');
+        const textEl = document.getElementById('demoGuideText');
+        if (!banner || !titleEl || !textEl) return;
+
+        const GUIDE = {
+            welcome: {
+                title: '👋 ברוכים הבאים',
+                text: 'זהו מצב דמו עצמאי — אתם משחקים לבד, בקצב שלכם. לחצו על "התחילו מהנחיות המשחק" כדי להתחיל.',
+                toast: null
+            },
+            guidelines: {
+                title: '📚 שלב 1 — קראו את ההנחיות',
+                text: 'עברו על ההנחיות עד הסוף, ולאחר מכן לחצו על "🚀 הבנתי, התחל סימולציה" כדי לעבור לעמדת העבודה.',
+                toast: { title: 'שלב ההנחיות', body: 'קראו את ההנחיות בעיון. בסיומן תוכלו להמשיך בעצמכם לעמדת העבודה.' }
+            },
+            team_station: {
+                title: '👥 שלב 2 — בחרו קבוצה ובנו אסטרטגיה',
+                text: 'בחרו קבוצת עניין, בנו אסטרטגיית איכות, והגישו את ההחלטה כדי להתחיל את המשמרת (3 דקות, אירוע כל דקה).',
+                toast: { title: 'עמדת העבודה', body: 'בחרו קבוצת עניין מהרשימה כדי להתחיל לבנות את האסטרטגיה שלכם.' }
+            },
+            simulator: {
+                title: '🔬 סימולטור בקרת איכות',
+                text: 'זהו תרגול נפרד לבקרת איכות סטטיסטית (SPC). תוכלו לחזור לעמדת העבודה בכל שלב דרך התפריט.',
+                toast: { title: 'סימולטור בקרת איכות', body: 'תרגלו כאן את עקרונות בקרת האיכות הסטטיסטית.' }
+            }
+        };
+
+        const g = GUIDE[tabId];
+        if (!g) { banner.style.display = 'none'; return; }
+
+        titleEl.innerText = g.title;
+        textEl.innerText = g.text;
+        banner.style.display = 'block';
+
+        if (g.toast && tabId !== lastGuidedTab) {
+            showSystemNotification(g.toast.title, g.toast.body);
+        }
+        lastGuidedTab = tabId;
+    }
+    let lastGuidedTab = null;
+    let guidelinesCompleted = false;
 
     // יצירה דינמית של כרטיסי קבוצות העניין עם האייקונים בעמדת הסטודנט
     function adjustTeamDropdownOptions() {
-        const count = parseInt(document.getElementById('teamCountConfigInput').value);
+        const count = DEMO_CONFIG.teamCount;
         const grid = document.getElementById('teamsSelectionVisualGrid');
         if (!grid) return;
         
@@ -2849,23 +3363,16 @@ window.toggleFaqItem = function(element) {
 
         renderTeamKPIBars();
 
-        // סנכרון לענן בסטטוס 'נעול' — ממתין שהמנחה יפעיל
+        // סנכרון אופציונלי לענן (לא חוסם) — בכל מקרה הצוות מפעיל בעצמו את המשמרת
         teamState.shiftStarted = false;
         syncTeamToCloud('locked');
 
-        // מצב מקוון: ממתינים למנחה. מצב לא מקוון: מציגים כפתור התחלה ידנית לצוות
-        if (currentUser && db) {
-            document.getElementById('waitingOnlineMsg').style.display = 'block';
-            document.getElementById('waitingOfflineStart').style.display = 'none';
-            startTeamSelfListener();
-        } else {
-            console.warn("⚠️ מצב לא מקוון — הצוות יפעיל את המשמרת ידנית");
-            document.getElementById('waitingOnlineMsg').style.display = 'none';
-            document.getElementById('waitingOfflineStart').style.display = 'block';
-        }
+        // מצב דמו: תמיד התחלה עצמאית — אין המתנה למנחה
+        document.getElementById('waitingOnlineMsg').style.display = 'none';
+        document.getElementById('waitingOfflineStart').style.display = 'block';
     }
 
-    // הפעלת המשמרת בפועל — נקראת כשהמנחה לוחץ "הפעל משמרת" (דרך הענן)
+    // הפעלת המשמרת בפועל — מצב דמו: הצוות לוחץ "התחל משמרת" בעצמו
     // התחלה ידנית של הצוות (מצב לא מקוון בלבד)
     function manualStartShift() {
         if (!teamState || teamState.shiftStarted) return;
@@ -2875,6 +3382,7 @@ window.toggleFaqItem = function(element) {
     function beginTeamShift() {
         if (!teamState || teamState.shiftStarted) return;
         teamState.shiftStarted = true;
+        teamState.gameStartedAt = Date.now();
 
         const profile = allPossibleProfiles[teamState.teamId];
         document.getElementById('teamWaitingBlock').style.display = 'none';
@@ -2884,14 +3392,21 @@ window.toggleFaqItem = function(element) {
         document.getElementById('activePlayingTeamTitle').innerText = `${profile.icon} חדר מצב - ${teamState.name}`;
 
         renderTeamKPIBars();
-        syncTeamToCloud('active');
+
+        // אתחול סימולטור בקרת האיכות החי (תרחיש עיר + מדידה ראשונית)
+        initLiveQualityControl();
 
         gameTimeSeconds = 0;
         if(gameTimerInterval) clearInterval(gameTimerInterval);
 
-        // קריאת משך המשחק שנקבע בפאנל המנהל
-        const durMin = parseInt(document.getElementById('gameDurationConfigInput').value) || 10;
+        // קריאת משך המשמרת: ערך קבוע במצב דמו (אין מנהל שמגדיר זאת)
+        const durMin = DEMO_CONFIG.gameDurationMinutes;
         gameTotalSeconds = durMin * 60;
+
+        syncTeamToCloud('active');
+
+        // האזנה מתמשכת לאותות מהמנחה תוך כדי משחק (קיצור זמן / סיום כפוי)
+        startTeamLiveControlListener();
 
         // בניית לוח אירועים ייעודי לצוות לפי הגדרות המנהל
         buildTeamEventSchedule();
@@ -2911,13 +3426,122 @@ window.toggleFaqItem = function(element) {
         }, 1000);
     }
 
-    // בונה את לוח האירועים של הצוות הנוכחי לפי הגדרות המנהל
+    // ===== סימולטור בקרת איכות חי (מבוסס נתוני המשחק) =====
+    const LIVE_SCENARIOS = [
+        { name: "סידני",     difficulty: "קל",    base: 6,  noise: 2 },
+        { name: "תל אביב",   difficulty: "בינוני", base: 9,  noise: 3 },
+        { name: "בריסל",     difficulty: "בינוני", base: 9,  noise: 3 },
+        { name: "איסטנבול",  difficulty: "קשה",   base: 12, noise: 4 },
+        { name: "ניירובי",   difficulty: "קשה",   base: 12, noise: 4 },
+        { name: "טוקיו",     difficulty: "קשה מאוד", base: 14, noise: 5 }
+    ];
+    let liveChart = null;
+    let liveWaitTimes = [];
+    let liveMeasureCount = 0;
+
+    function initLiveQualityControl() {
+        // הקצאת תרחיש עיר אקראי לצוות (אם עוד לא הוקצה)
+        if (!teamState.scenario) {
+            teamState.scenario = LIVE_SCENARIOS[Math.floor(Math.random() * LIVE_SCENARIOS.length)];
+        }
+        const badge = document.getElementById('liveScenarioBadge');
+        if (badge) badge.innerText = `תרחיש: ${teamState.scenario.name} (${teamState.scenario.difficulty})`;
+
+        liveWaitTimes = [];
+        liveMeasureCount = 0;
+        if (liveChart) { liveChart.destroy(); liveChart = null; }
+
+        // מדידה ראשונית (baseline) — 5 נקודות
+        for (let i = 0; i < 5; i++) generateLiveMeasurement();
+        renderLiveChart();
+    }
+
+    // מייצר מדידת זמן-המתנה אחת, בקורלציה ל-KPIs של הצוות
+    function generateLiveMeasurement() {
+        if (!teamState || !teamState.scenario) return;
+        liveMeasureCount++;
+        const s = teamState.scenario;
+
+        // ממוצע ה-KPIs ה"תפעוליים" קובע את איכות התהליך (0-100)
+        const kpi = teamState.kpi;
+        const relevant = ['satisfaction', 'sla', 'morale'].filter(k => kpi[k] !== undefined);
+        let qualityAvg = relevant.length ? relevant.reduce((a, k) => a + kpi[k], 0) / relevant.length : 50;
+
+        // KPI גבוה → גורם הפחתה (זמן המתנה קצר); KPI נמוך → תוספת זמן
+        // qualityFactor: 1.0 כשהאיכות 100, ~2.5 כשהאיכות 0
+        const qualityFactor = 1 + ((100 - qualityAvg) / 100) * 2.5;
+        const base = s.base * qualityFactor;
+
+        // רעש אקראי — גדל ככל שהאיכות נמוכה (תהליך לא יציב)
+        const instability = 1 + ((100 - qualityAvg) / 100) * 1.5;
+        const noise = (Math.random() - 0.5) * 2 * s.noise * instability;
+
+        // חריגה אקראית (סיבה מיוחדת) — סבירה יותר כשהאיכות נמוכה
+        let spike = 0;
+        if (Math.random() < (100 - qualityAvg) / 250) {
+            spike = Math.random() * 15 + 8;
+        }
+
+        let wait = Math.max(1, base + noise + spike);
+        liveWaitTimes.push(parseFloat(wait.toFixed(1)));
+        // שמירת חלון של 20 מדידות אחרונות
+        if (liveWaitTimes.length > 20) liveWaitTimes.shift();
+    }
+
+    function renderLiveChart() {
+        if (typeof Chart === 'undefined') return;
+        const canvas = document.getElementById('liveControlChart');
+        if (!canvas) return;
+
+        const data = liveWaitTimes;
+        const avg = data.reduce((a, b) => a + b, 0) / (data.length || 1);
+        const sd = Math.sqrt(data.map(v => Math.pow(v - avg, 2)).reduce((a, b) => a + b, 0) / (data.length || 1));
+        const ucl = avg + 2 * sd, lcl = Math.max(0, avg - 2 * sd);
+        const outliers = data.filter(v => v > ucl || v < lcl).length;
+
+        document.getElementById('liveAvgWait').innerText = avg.toFixed(1) + " דק'";
+        document.getElementById('liveOutliers').innerText = outliers;
+
+        const labels = data.map((_, i) => `${i + 1}`);
+        if (liveChart) liveChart.destroy();
+        liveChart = new Chart(canvas.getContext('2d'), {
+            type: 'line',
+            data: { labels, datasets: [
+                { label: 'זמן המתנה', data: data, borderColor: '#2563eb', tension: 0.2, fill: false, pointRadius: 3 },
+                { label: 'ממוצע', data: Array(data.length).fill(avg), borderColor: '#16a34a', borderDash: [5,5], pointRadius: 0 },
+                { label: 'גבול עליון', data: Array(data.length).fill(ucl), borderColor: '#dc2626', borderDash: [2,2], pointRadius: 0 },
+                { label: 'גבול תחתון', data: Array(data.length).fill(lcl), borderColor: '#ca8a04', borderDash: [2,2], pointRadius: 0 }
+            ]},
+            options: { responsive: true, maintainAspectRatio: false, animation: false,
+                plugins: { legend: { labels: { boxWidth: 12, font: { size: 10 } } } } }
+        });
+    }
+
+    // נקרא אחרי כל החלטה — מוסיף מדידות חדשות שמשקפות את ה-KPIs המעודכנים
+    function updateLiveQualityControl() {
+        if (!document.getElementById('liveControlChart')) return;
+        for (let i = 0; i < 3; i++) generateLiveMeasurement();
+        renderLiveChart();
+    }
+
+    // ערבוב הוגן (Fisher-Yates) — משמש לבחירת אירועים אקראיים מתוך הבנק
+    function shuffleArray(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
+
+    // בונה את לוח האירועים של הצוות הנוכחי — ערכים קבועים במצב דמו (אין מנהל שמגדיר זאת)
     let scheduledTeamEvents = [];
     function buildTeamEventSchedule() {
-        const intervalMin = parseFloat(document.getElementById('eventIntervalConfigInput').value) || 3;
-        let count = parseInt(document.getElementById('eventCountConfigInput').value) || 3;
+        const intervalMin = DEMO_CONFIG.eventIntervalMinutes;
+        let count = DEMO_CONFIG.eventCount;
 
-        const pool = (TEAM_EVENTS[teamState.teamId] || []).slice();
+        // ערבוב בנק האירועים של הצוות — כל הרצה מקבלת שילוב/סדר שונה מתוך הבנק
+        const pool = shuffleArray(TEAM_EVENTS[teamState.teamId] || []);
         count = Math.min(count, pool.length);
 
         const FIRST_EVENT_SECOND = 10; // האירוע הראשון תמיד אחרי 10 שניות
@@ -2934,8 +3558,9 @@ window.toggleFaqItem = function(element) {
                 fired: false
             });
         }
-        console.log(`🎲 Team ${teamState.teamId}: ${scheduledTeamEvents.length} events scheduled at`, scheduledTeamEvents.map(e => e.triggerSecond + 's'));
+        console.log(`🎲 Team ${teamState.teamId}: ${scheduledTeamEvents.length} events scheduled (randomized order) at`, scheduledTeamEvents.map(e => e.triggerSecond + 's'));
     }
+
 
     function renderTeamKPIBars() {
         const display = document.getElementById('teamKpisDisplayGrid');
@@ -3043,11 +3668,11 @@ window.toggleFaqItem = function(element) {
     }
 
     function resetCapaForm() {
-        ['capaClassification','capaDescription','capaSeverity','capaProbability','capaContainment','capaCorrectiveAction','capaIsoJustification'].forEach(id => {
+        ['capaClassification','capaDescription','capaSeverity','capaProbability','capaContainment','capaCorrectiveAction','capaIsoClause','capaIsoJustification'].forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
         });
-        document.querySelectorAll('.iso-clause-checkbox').forEach(cb => cb.checked = false);
+        document.querySelectorAll('.baldrige-checkbox').forEach(cb => cb.checked = false);
         const rs = document.getElementById('riskScore');
         if (rs) rs.style.display = 'none';
     }
@@ -3055,16 +3680,25 @@ window.toggleFaqItem = function(element) {
     // אוסף ומאמת את שדות CAPA. מחזיר מחרוזת נימוק, או null אם חסר משהו
     function gatherCapaJustification() {
         const classMap = { conceptual:"טעות קונספטואלית", calculation:"טעות חישובית", process:"כשל תהליכי", human:"טעות אנוש", external:"גורם חיצוני" };
+        const isoClauseMap = {
+            "10.2.1":"אי-התאמה (Nonconformity)",
+            "6.1":"חשיבה מבוססת סיכונים",
+            "8.7":"בקרת תפוקות לא-תואמות",
+            "10.2":"פעולה מתקנת",
+            "9.1":"ניטור, מדידה, ניתוח והערכה",
+            "10.3":"שיפור מתמיד"
+        };
         const cls = document.getElementById('capaClassification').value;
         const desc = document.getElementById('capaDescription').value.trim();
         const sev = document.getElementById('capaSeverity').value;
         const prob = document.getElementById('capaProbability').value;
         const cont = document.getElementById('capaContainment').value.trim();
         const corr = document.getElementById('capaCorrectiveAction').value.trim();
-        const isoText = document.getElementById('capaIsoJustification').value.trim();
-        const clauses = Array.from(document.querySelectorAll('.iso-clause-checkbox:checked')).map(c => c.value);
+        const isoClause = document.getElementById('capaIsoClause').value;
+        const baldrigeText = document.getElementById('capaIsoJustification').value.trim();
+        const categories = Array.from(document.querySelectorAll('.baldrige-checkbox:checked')).map(c => c.value);
 
-        if (!cls || !desc || !sev || !prob || !cont || !corr || clauses.length === 0 || !isoText) {
+        if (!cls || !desc || !sev || !prob || !cont || !corr || !isoClause || categories.length === 0 || !baldrigeText) {
             return null;
         }
         const score = parseInt(sev) * parseInt(prob);
@@ -3072,7 +3706,8 @@ window.toggleFaqItem = function(element) {
                `⚠️ סיכון: חומרה ${sev} × הסתברות ${prob} = ${score}\n` +
                `🛡️ פעולה מיידית: ${cont}\n` +
                `🔧 פעולה מתקנת: ${corr}\n` +
-               `📜 סעיפי ISO: ${clauses.join(', ')} — ${isoText}`;
+               `📑 ISO 9001 סעיף ${isoClause}: ${isoClauseMap[isoClause] || ''}\n` +
+               `🏛️ קריטריוני Baldrige: ${categories.join(', ')} — ${baldrigeText}`;
     }
 
     function onCrisisOptionChange() {
@@ -3120,7 +3755,7 @@ window.toggleFaqItem = function(element) {
         // איסוף ואימות טופס CAPA — חובה למלא את כל השלבים
         const just = gatherCapaJustification();
         if (!just) {
-            showSystemNotification("טופס CAPA חסר", "יש להשלים את כל 5 שלבי תהליך ה-CAPA לפני שליחת ההחלטה (כולל בחירת סעיף ISO אחד לפחות).", true);
+            showSystemNotification("טופס CAPA חסר", "יש להשלים את כל 6 שלבי תהליך ה-CAPA לפני שליחת ההחלטה (כולל בחירת סעיף ISO 9001 וקריטריון Baldrige אחד לפחות).", true);
             return;
         }
         document.getElementById('teamCrisisJustificationInput').value = just;
@@ -3140,6 +3775,12 @@ window.toggleFaqItem = function(element) {
             for (let key in teamState.kpi) {
                 const sel = document.getElementById('openImpact_' + key);
                 if (sel) impact[key] = parseInt(sel.value) || 0;
+            }
+            // תקרת השפעה: סך הבונוסים החיוביים מוגבל ל-+20 (מחייב trade-off ניהולי)
+            const totalPositive = Object.values(impact).filter(v => v > 0).reduce((a, b) => a + b, 0);
+            if (totalPositive > 20) {
+                showSystemNotification("חריגה מהתקרה", `סך ההשפעות החיוביות שבחרתם הוא +${totalPositive}, אך המקסימום המותר הוא +20. כמו בניהול אמיתי — צריך לבחור: שיפור במדד אחד בא על חשבון אחר.`, true);
+                return;
             }
             optObj = { id: 'E', text: openText, impact: impact };
             choiceLabel = 'חלופה פתוחה: ' + openText;
@@ -3171,6 +3812,7 @@ window.toggleFaqItem = function(element) {
         document.getElementById('teamNoCrisisView').style.display = 'block';
         document.getElementById('teamActiveCrisisView').style.display = 'none';
         renderTeamKPIBars();
+        updateLiveQualityControl();
         showSystemNotification("החלטה בוצעה", `ההחלטה התקבלה בהצלחה! התקבל בונוס מהירות של ${timeBonus}+ נק'.`);
 
         // סנכרון מיידי לענן — המנהל יראה את ההחלטה החדשה בזמן אמת
@@ -3191,8 +3833,13 @@ window.toggleFaqItem = function(element) {
             chosenPreventionName: teamState.chosenPreventionName,
             strategy: teamState.strategy,
             recoveryPlan: teamState.recoveryPlan,
+            stakeholderResult: teamState.stakeholderResult || null,
             status: status,               // 'locked' | 'active' | 'finished'
             startSignal: (teamState.shiftStarted === true), // האם המנחה הפעיל
+            round: currentRound,
+            roundResults: teamState.roundResults || {},
+            gameStartedAt: teamState.gameStartedAt || null,   // timestamp תחילת המשמרת (ל"זמן שנותר" בפאנל המנהל)
+            gameTotalSeconds: (status === 'active' || status === 'finished') ? gameTotalSeconds : null,
             lastUpdate: Date.now()
         };
 
@@ -3232,8 +3879,39 @@ window.toggleFaqItem = function(element) {
         }, (err) => console.error("Team self-listener error:", err.code, err.message));
     }
 
+    // מאזין מתמשך בזמן משחק פעיל: קולט "סיים משמרת עכשיו" מהמנחה (במסמך הפרטי של הצוות)
+    let teamLiveControlUnsubscribe = null;
+    function startTeamLiveControlListener() {
+        if (!currentUser || !db || !teamState) {
+            console.warn("⚠️ Live control listener not started (no cloud) — מצב לא מקוון");
+            return;
+        }
+        if (teamLiveControlUnsubscribe) teamLiveControlUnsubscribe();
+        const teamDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'results', String(teamState.teamId));
+        teamLiveControlUnsubscribe = onSnapshot(teamDocRef, (snap) => {
+            if (!snap.exists() || !teamState || !teamState.shiftStarted || teamState.shiftFinished) return;
+            const data = snap.data();
+
+            // 🛑 סיום כפוי מיידי מהמנחה
+            if (data.forceFinish === true) {
+                console.log(`🛑 Force-finish signal received for team ${teamState.teamId}`);
+                if (teamLiveControlUnsubscribe) { teamLiveControlUnsubscribe(); teamLiveControlUnsubscribe = null; }
+                finishActiveTeamShift();
+            }
+        }, (err) => console.error("Team live-control listener error:", err.code, err.message));
+    }
+
     async function finishActiveTeamShift() {
         if(gameTimerInterval) clearInterval(gameTimerInterval);
+        if (teamLiveControlUnsubscribe) { teamLiveControlUnsubscribe(); teamLiveControlUnsubscribe = null; }
+        if (teamState) teamState.shiftFinished = true;
+
+        // שמירת תוצאות הסבב הנוכחי (להשוואה בין סבבים)
+        if (!teamState.roundResults) teamState.roundResults = {};
+        teamState.roundResults[currentRound] = JSON.parse(JSON.stringify(teamState.kpi));
+        try {
+            localStorage.setItem(`qc_round_${teamState.teamId}_${currentRound}`, JSON.stringify(teamState.kpi));
+        } catch(e) {}
 
         // סנכרון סופי לענן עם סטטוס 'הושלם'
         await syncTeamToCloud('finished');
@@ -3278,7 +3956,38 @@ window.toggleFaqItem = function(element) {
                 </li>
             `;
         });
+
+        // הודעה לפי הסבב + כפתור המשך עצמאי לסבב הבא (מצב דמו)
+        const roundMsg = document.getElementById('finishRoundMsg');
+        if (roundMsg) {
+            if (currentRound === 1) {
+                roundMsg.innerHTML = '🔵 סיימתם את <strong>סבב 1 (למידה)</strong>! מומלץ לעצור רגע ולחשוב: מה הייתם משפרים? כשתהיו מוכנים, המשיכו לסבב 2.';
+            } else if (currentRound === 2) {
+                roundMsg.innerHTML = '🟢 סיימתם את <strong>סבב 2 (שיפור)</strong>! השוו את התוצאות לסבב 1 — האם השתפרתם? בסבב הבא תתרגלו ניהול בעלי עניין.';
+            } else {
+                roundMsg.innerHTML = '🤝 סיימתם את <strong>כל שלושת הסבבים</strong>! כל הכבוד על השלמת הסימולציה כולה.';
+            }
+        }
+
+        const nextBtnContainer = document.getElementById('roundAdvanceContainer');
+        if (nextBtnContainer) {
+            if (currentRound === 1) {
+                nextBtnContainer.innerHTML = '<button class="btn btn-primary" style="font-size:1.1rem; padding:12px 30px;" onclick="advanceToNextRound(2)">➡️ המשך לסבב 2 — שיפור</button>';
+            } else if (currentRound === 2) {
+                nextBtnContainer.innerHTML = '<button class="btn" style="background:var(--purple-holder); color:white; font-size:1.1rem; padding:12px 30px;" onclick="advanceToNextRound(3)">➡️ המשך לסבב 3 — ניהול בעלי עניין</button>';
+            } else {
+                nextBtnContainer.innerHTML = '<div style="color:#16a34a; font-weight:bold;">🏁 סיימתם את כל הסבבים בהצלחה!</div>';
+            }
+        }
     }
+
+    // 🧭 מצב דמו: המשתתף עצמו מתקדם לסבב הבא בלחיצת כפתור (במקום המתנה למנהל)
+    window.advanceToNextRound = function(round) {
+        applyRoundState(round);
+        resetTeamViewToSetup();
+        showSystemNotification("מעבר לסבב חדש", `עברתם לסבב ${round}. בהצלחה!`);
+        switchActiveTab('team_station');
+    };
 
     function resetTeamViewToSetup() {
         document.getElementById('teamSetupBlock').style.display = 'block';
@@ -3299,13 +4008,48 @@ window.toggleFaqItem = function(element) {
     // ==========================================
     //            👑 לוגיקת המטה המרכזי
     // ==========================================
+
+    // ⏱️ מתקתק כל שנייה את כל תצוגות "זמן שנותר" בפאנל המנהל (לא דורש רענון/קריאה לענן)
+    let adminTimeRemainingInterval = null;
+    function startAdminTimeRemainingTicker() {
+        if (adminTimeRemainingInterval) return;
+        adminTimeRemainingInterval = setInterval(() => {
+            document.querySelectorAll('.admin-time-remaining').forEach(el => {
+                const started = parseInt(el.getAttribute('data-started'), 10);
+                const total = parseInt(el.getAttribute('data-total'), 10);
+                if (!started || !total) { el.innerText = '--:--'; return; }
+                const elapsedSec = Math.floor((Date.now() - started) / 1000);
+                const remainingSec = Math.max(0, total - elapsedSec);
+                const mins = Math.floor(remainingSec / 60).toString().padStart(2, '0');
+                const secs = (remainingSec % 60).toString().padStart(2, '0');
+                el.innerText = `${mins}:${secs}`;
+                el.style.color = remainingSec <= 30 ? '#dc2626' : '';
+            });
+        }, 1000);
+    }
+
+    // 🛑 בקשת אישור לפני סיום כפוי של משמרת צוות
+    function facilitatorConfirmForceFinish(teamId) {
+        showCustomConfirm(
+            "סיום משמרת כפוי",
+            `האם אתם בטוחים שברצונכם לסיים מיידית את המשמרת של צוות ${teamId}? הצוות יועבר מיד למסך הסיכום עם המדדים הנוכחיים שלו, גם אם עוד נותר זמן.`,
+            "🛑",
+            () => facilitatorForceFinishTeam(teamId)
+        );
+    }
+    window.facilitatorConfirmForceFinish = facilitatorConfirmForceFinish;
+
     function renderHqDashboardGrid() {
         const grid = document.getElementById('hqDashboardGrid');
         const debriefTableBody = document.getElementById('detailedDebriefTableBody');
+        const stakeholderTableBody = document.getElementById('stakeholderDebriefTableBody');
         
         if (!grid || !debriefTableBody) return;
+        startAdminTimeRemainingTicker();
         grid.innerHTML = '';
         debriefTableBody.innerHTML = '';
+        if (stakeholderTableBody) stakeholderTableBody.innerHTML = '';
+        let foundStakeholderData = false;
 
         let totalTeams = parseInt(document.getElementById('teamCountConfigInput').value);
         let foundData = false;
@@ -3344,11 +4088,25 @@ window.toggleFaqItem = function(element) {
                 // תג סטטוס בזמן אמת
                 let statusBadge = '';
                 let startButton = '';
+                let timeRemainingHtml = '';
                 if (data.status === 'locked' && data.startSignal !== true) {
                     statusBadge = `<span style="background:#fff3cd; color:#856404; padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:bold;">⏳ ממתין להפעלה</span>`;
                     startButton = `<button class="btn btn-success" style="width:100%; margin:8px 0; padding:10px; font-size:0.95rem;" onclick="facilitatorStartTeam(${i})">▶️ הפעל משמרת לצוות זה</button>`;
                 } else if (data.status === 'active') {
                     statusBadge = `<span style="background:#fef3c7; color:#92400e; padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:bold;">🔴 משחק כעת</span>`;
+                    if (data.gameStartedAt && data.gameTotalSeconds) {
+                        timeRemainingHtml = `
+                        <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px 10px; border-radius:6px; margin:8px 0; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="font-weight:bold; color:#9a3412;">⏱️ זמן שנותר: <span class="admin-time-remaining" data-started="${data.gameStartedAt}" data-total="${data.gameTotalSeconds}">--:--</span></span>
+                            <button class="btn btn-danger" style="padding:5px 12px; font-size:0.8rem; width:auto;" onclick="facilitatorConfirmForceFinish(${i})">🛑 סיים משמרת עכשיו</button>
+                        </div>`;
+                    } else {
+                        timeRemainingHtml = `
+                        <div style="background:#fff7ed; border:1px solid #fed7aa; padding:8px 10px; border-radius:6px; margin:8px 0; display:flex; justify-content:space-between; align-items:center;">
+                            <span style="color:#9a3412; font-size:0.85rem;">⏱️ זמן שנותר: לא זמין (גרסה ישנה / נתון חסר)</span>
+                            <button class="btn btn-danger" style="padding:5px 12px; font-size:0.8rem; width:auto;" onclick="facilitatorConfirmForceFinish(${i})">🛑 סיים משמרת עכשיו</button>
+                        </div>`;
+                    }
                 } else if (data.status === 'finished') {
                     statusBadge = `<span style="background:#d1fae5; color:#065f46; padding:3px 10px; border-radius:20px; font-size:0.75rem; font-weight:bold;">✅ הסתיים</span>`;
                 }
@@ -3367,6 +4125,48 @@ window.toggleFaqItem = function(element) {
                     </div>
                 ` : '';
 
+                // סבב 3 — סיכום ניהול בעלי עניין (מפה + השקעות + מדד חוסן)
+                let stakeholderSnippet = '';
+                if (data.stakeholderResult) {
+                    const sr = data.stakeholderResult;
+                    const resColor = sr.resilience >= 80 ? '#166534' : (sr.resilience >= 50 ? '#a16207' : '#991b1b');
+                    const critIds = (TEAM_CRITICAL_STAKEHOLDERS[i] || []);
+                    const choicesHtml = (sr.mapChoices ? STAKEHOLDERS.map(s => {
+                        const choice = sr.mapChoices[s.id];
+                        if (!choice) return '';
+                        const isCrit = critIds.includes(s.id);
+                        const mark = choice === 'good' ? '✅' : '🔹';
+                        return `<span style="display:inline-block; margin:2px 4px 2px 0; padding:2px 7px; border-radius:10px; background:${choice === 'good' ? '#f0fdf4' : '#f8fafc'}; border:1px solid ${isCrit ? '#c084fc' : '#e2e8f0'};">${mark} ${s.icon}${isCrit ? '⭐' : ''}</span>`;
+                    }).join('') : '');
+                    const investNames = (sr.investments || []).map(id => {
+                        const inv = STAKE_INVESTMENTS.find(x => x.id === id);
+                        return inv ? inv.name : id;
+                    }).join(' · ') || 'ללא השקעות';
+
+                    stakeholderSnippet = `
+                    <div style="background:#faf5ff; border:1px solid #e9d5ff; padding:8px; border-radius:6px; margin:5px 0; font-size:0.8rem;">
+                        <strong style="color:${resColor};">🤝 בעלי עניין (סבב 3) — חוסן: ${sr.resilience}/100</strong><br>
+                        <span style="color:#666;">${sr.goodChoices}/${sr.totalStake} פתרונות נכונים (${sr.criticalHits} קריטיים) · תקציב שנותר: ${sr.budgetLeft}/100</span><br>
+                        <div style="margin-top:4px;">${choicesHtml}</div>
+                        <span style="color:#666;">💰 השקעות: ${investNames}</span>
+                    </div>`;
+
+                    // שורה בטבלה הייעודית לסבב 3 בפאנל המנהל
+                    if (stakeholderTableBody) {
+                        foundStakeholderData = true;
+                        stakeholderTableBody.innerHTML += `
+                            <tr style="border-bottom: 1px solid #eee;">
+                                <td style="font-weight:bold; color:var(--purple-holder); vertical-align:middle;">${teamIcon} צוות ${data.teamId}<br><small style="color:#666">${data.name}</small></td>
+                                <td style="font-size:0.85rem;">${choicesHtml || '<span style="color:#aaa;">אין נתוני מיפוי</span>'}</td>
+                                <td style="text-align:center; font-weight:bold;">${sr.goodChoices}/${sr.totalStake}<br><small style="color:#666; font-weight:normal;">(${sr.criticalHits} קריטיים)</small></td>
+                                <td style="font-size:0.85rem;">${investNames}</td>
+                                <td style="text-align:center; font-weight:bold;">${sr.budgetLeft}/100</td>
+                                <td style="text-align:center; font-weight:bold; color:${resColor};">${sr.resilience}/100</td>
+                            </tr>
+                        `;
+                    }
+                }
+
                 grid.innerHTML += `
                     <div class="team-summary-box" style="border: 1px solid #cbd5e1; border-radius: 12px; padding: 15px; background: white; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
                         <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 8px;">
@@ -3375,9 +4175,11 @@ window.toggleFaqItem = function(element) {
                         </div>
                         <hr style="margin:8px 0; border-color:#e2e8f0;">
                         ${startButton}
+                        ${timeRemainingHtml}
                         <p style="font-weight:bold; font-size:0.9rem; color:#555;">📋 אסטרטגיית מנע שגובשה:</p>
                         ${strategySnippet}
                         ${recoverySnippet}
+                        ${stakeholderSnippet}
 
                         <p style="font-weight:bold; font-size:0.9rem; color:#555; margin-top:10px;">📊 מדדי סיכום:</p>
                         <div style="display:grid; grid-template-columns:1fr 1fr; gap:5px; background:#f8fafc; padding:8px; border-radius:6px; margin:5px 0;">
@@ -3429,6 +4231,9 @@ window.toggleFaqItem = function(element) {
         if(!foundData) {
             grid.innerHTML = `<p style="color: #aaa; text-align: center; grid-column: 1/-1; padding: 40px;">ממתין להשלמת משמרות בעמדות הסטודנטים...</p>`;
             debriefTableBody.innerHTML = `<tr><td colspan="7" style="text-align:center; color:#94a3b8; padding:30px;">ממתין לנתוני משחק בזמן אמת מהכיתה...</td></tr>`;
+        }
+        if (stakeholderTableBody && !foundStakeholderData) {
+            stakeholderTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:#94a3b8; padding:30px;">ממתין שצוותים יסיימו את סבב 3 (ניהול בעלי עניין)...</td></tr>`;
         }
     }
 
@@ -3572,10 +4377,22 @@ window.toggleFaqItem = function(element) {
         showSystemNotification("הגדרת כיתה", "כמות הצוותים בסדנה עודכנה ל-" + document.getElementById('teamCountConfigInput').value);
     }
 
-    function onAdminGameDurationChange() {
+    async function onAdminGameDurationChange() {
         const durMin = parseInt(document.getElementById('gameDurationConfigInput').value) || 10;
         gameTotalSeconds = durMin * 60;
-        showSystemNotification("הגדרת זמן", "משך המשמרת עודכן ל-" + durMin + " דקות. ישפיע על משמרות חדשות שיתחילו מעכשיו.");
+
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "ההגדרה נשמרה מקומית בלבד — בלי חיבור לענן היא לא תגיע לתלמידים אחרים.", true);
+            return;
+        }
+        try {
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'gameSettings');
+            await setDoc(ref, { gameDurationMinutes: durMin, updatedAt: Date.now() }, { merge: true });
+            showSystemNotification("הגדרת זמן", "משך המשמרת עודכן ל-" + durMin + " דקות לכל הכיתה. ישפיע על משמרות חדשות שיתחילו מעכשיו (לא על משמרות שכבר רצות — לקיצור משמרת פעילה השתמשו ב'סיים משמרת עכשיו').");
+        } catch (err) {
+            console.error("Set duration failed:", err.code, err.message);
+            showSystemNotification("שגיאה", "עדכון משך המשמרת נכשל: " + (err.code || "שגיאה"), true);
+        }
     }
 
     function executeHardResetEverything() {
@@ -3589,6 +4406,10 @@ window.toggleFaqItem = function(element) {
                         const querySnapshot = await getDocs(collection(db, 'artifacts', appId, 'public', 'data', 'results'));
                         for (const documentRef of querySnapshot.docs) {
                             await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'results', documentRef.id));
+                        }
+                        // ניקוי אירועי שרשרת (סבב 3)
+                        if (typeof window.qcClearChainEvents === 'function') {
+                            await window.qcClearChainEvents();
                         }
                     } catch(e) {
                         console.error("Failed clearing firestore collection", e);
@@ -3610,7 +4431,7 @@ window.toggleFaqItem = function(element) {
                 
                 showSystemNotification("איפוס בוצע", "בוצע איפוס קשיח בהצלחה! הנתונים נמחקו והמערכת מוכנה לסבב חדש בכל הכיתה.");
                 lockAdminPanel();
-                switchActiveTab('team_station');
+                switchActiveTab('welcome');
             }
         );
     }
@@ -3710,9 +4531,27 @@ window.toggleFaqItem = function(element) {
         }
     }
 
+    // 🛑 המנהל מסיים בכוח את משמרת הצוות מיידית (קיצור משמרת פעילה)
+    async function facilitatorForceFinishTeam(teamId) {
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "סיום מרחוק דורש חיבור לענן. ודאו שהמערכת מחוברת.", true);
+            return;
+        }
+        try {
+            const teamDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'results', String(teamId));
+            await setDoc(teamDocRef, { forceFinish: true, lastUpdate: Date.now() }, { merge: true });
+            console.log(`🛑 Facilitator force-finished team ${teamId}`);
+            showSystemNotification("המשמרת הופסקה", `נשלחה לצוות ${teamId} הוראה לסיים את המשמרת מיידית.`);
+        } catch (err) {
+            console.error("Failed to force-finish team:", err.code, err.message);
+            showSystemNotification("שגיאה", "הפסקת המשמרת נכשלה: " + (err.code || "שגיאה"), true);
+        }
+    }
+
     // קישור פונקציות לחלון הגלובלי
     window.switchActiveTab = switchActiveTab;
     window.facilitatorStartTeam = facilitatorStartTeam;
+    window.facilitatorForceFinishTeam = facilitatorForceFinishTeam;
     window.manualStartShift = manualStartShift;
     window.adjustTeamDropdownOptions = adjustTeamDropdownOptions;
     window.initiateTeamActiveGame = initiateTeamActiveGame;
@@ -3728,6 +4567,96 @@ window.toggleFaqItem = function(element) {
     window.lockAdminPanel = lockAdminPanel;
     window.executeHardResetEverything = executeHardResetEverything;
     window.injectLecturerDemoData = injectLecturerDemoData;
+
+    // 🔓 המנהל פותח/נועל את הגישה לעמדת העבודה לכל הכיתה (דרך הענן)
+    async function facilitatorUnlockSimulator() {
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "פתיחת גישה לכל הכיתה דורשת חיבור לענן (מ-GitHub Pages).", true);
+            return;
+        }
+        try {
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'gameSettings');
+            await setDoc(ref, { simulatorUnlocked: true, updatedAt: Date.now() }, { merge: true });
+            applyGateState(true);
+            showSystemNotification("הגישה נפתחה", "עמדת העבודה נפתחה לכל הסטודנטים בכיתה!");
+        } catch (err) {
+            console.error("Unlock failed:", err.code, err.message);
+            showSystemNotification("שגיאה", "פתיחת הגישה נכשלה: " + (err.code || "שגיאה"), true);
+        }
+    }
+
+    async function facilitatorLockSimulator() {
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "פעולה זו דורשת חיבור לענן.", true);
+            return;
+        }
+        try {
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'gameSettings');
+            await setDoc(ref, { simulatorUnlocked: false, updatedAt: Date.now() }, { merge: true });
+            applyGateState(false);
+            showSystemNotification("הנעילה הוחזרה", "הכניסה לעמדת העבודה ננעלה. הסטודנטים ימתינו שוב לאישור.");
+        } catch (err) {
+            console.error("Lock failed:", err.code, err.message);
+        }
+    }
+
+    window.facilitatorUnlockSimulator = facilitatorUnlockSimulator;
+    window.facilitatorLockSimulator = facilitatorLockSimulator;
+
+    // 🔄 המנהל מעביר את כל הכיתה בין הסבבים (דרך הענן)
+    async function facilitatorSetRound(round) {
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "מעבר בין סבבים דורש חיבור לענן (מ-GitHub Pages).", true);
+            return;
+        }
+        try {
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'gameSettings');
+            await setDoc(ref, { currentRound: round, updatedAt: Date.now() }, { merge: true });
+            // כניסה לסבב 3 — ניקוי אירועי שרשרת ישנים כדי להתחיל נקי
+            if (round === 3 && typeof window.qcClearChainEvents === 'function') {
+                await window.qcClearChainEvents();
+            }
+            applyRoundState(round);
+            const msg = round === 3 ? "כל הכיתה עברה לסבב 3 (ניהול בעלי עניין)!" : round === 2 ? "כל הכיתה עברה לסבב 2 (שיפור)!" : "כל הכיתה חזרה לסבב 1 (למידה).";
+            showSystemNotification("מעבר סבב", msg);
+        } catch (err) {
+            console.error("Set round failed:", err.code, err.message);
+            showSystemNotification("שגיאה", "מעבר הסבב נכשל: " + (err.code || "שגיאה"), true);
+        }
+    }
+    window.facilitatorSetRound = facilitatorSetRound;
+
+    // 🔬 המנהל פותח/נועל את הגישה לסימולטור לכל הכיתה
+    async function facilitatorUnlockSimulatorTool() {
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "פתיחת גישה לסימולטור דורשת חיבור לענן.", true);
+            return;
+        }
+        try {
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'gameSettings');
+            await setDoc(ref, { simulatorToolUnlocked: true, updatedAt: Date.now() }, { merge: true });
+            applySimulatorToolState(true);
+            showSystemNotification("הסימולטור נפתח", "גישת הסטודנטים לסימולטור בקרת האיכות נפתחה!");
+        } catch (err) {
+            console.error("Sim unlock failed:", err.code, err.message);
+        }
+    }
+    async function facilitatorLockSimulatorTool() {
+        if (!currentUser || !db) {
+            showSystemNotification("אין חיבור ענן", "פעולה זו דורשת חיבור לענן.", true);
+            return;
+        }
+        try {
+            const ref = doc(db, 'artifacts', appId, 'public', 'data', 'config', 'gameSettings');
+            await setDoc(ref, { simulatorToolUnlocked: false, updatedAt: Date.now() }, { merge: true });
+            applySimulatorToolState(false);
+            showSystemNotification("הסימולטור ננעל", "גישת הסטודנטים לסימולטור ננעלה.");
+        } catch (err) {
+            console.error("Sim lock failed:", err.code, err.message);
+        }
+    }
+    window.facilitatorUnlockSimulatorTool = facilitatorUnlockSimulatorTool;
+    window.facilitatorLockSimulatorTool = facilitatorLockSimulatorTool;
     window.refreshAdminDatabaseStats = refreshAdminDatabaseStats;
     window.onAdminTeamCountChange = onAdminTeamCountChange;
     window.onAdminGameDurationChange = onAdminGameDurationChange;
@@ -3737,13 +4666,8 @@ window.toggleFaqItem = function(element) {
     // טעינת Firebase ברקע (לא חוסם את ממשק המשתמש)
     loadFirebaseAndInit();
 
-    function resetPresentationFromAdmin() {
-        if (!confirm('⚠️ האם לאפס את מצגת התוצאות?\nכל דפי העבודה שהתקבלו יימחקו.')) return;
-        presClear();
-        showSystemNotification('✅ המצגת אופסה', 'כל דפי העבודה נמחקו בהצלחה');
-    }
-
-    window.resetPresentationFromAdmin = resetPresentationFromAdmin;
+    // 🧭 מצב דמו: הצגת המנחה הוירטואלי כבר במסך הפתיחה
+    updateDemoGuide('welcome');
 
 
 </script>
@@ -3889,14 +4813,28 @@ window.toggleFaqItem = function(element) {
                 return;
             }
 
-            // המרת הגרפים לתמונות PNG
+            // המרת הגרפים לתמונות מוקטנות (מונע חריגה ממגבלת 1MB של Firestore)
             function chartImg(id) {
                 const c = document.getElementById(id);
-                try { return c ? c.toDataURL('image/png', 0.7) : ''; } catch(e) { return ''; }
+                if (!c || !c.width || c.width === 0) return '';
+                try {
+                    // הקטנה לרוחב מקסימלי 600px ושמירה כ-JPEG דחוס
+                    const maxW = 600;
+                    const scale = c.width > maxW ? maxW / c.width : 1;
+                    const tmp = document.createElement('canvas');
+                    tmp.width = Math.round(c.width * scale);
+                    tmp.height = Math.round(c.height * scale);
+                    const ctx = tmp.getContext('2d');
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fillRect(0, 0, tmp.width, tmp.height);
+                    ctx.drawImage(c, 0, 0, tmp.width, tmp.height);
+                    return tmp.toDataURL('image/jpeg', 0.5);
+                } catch(e) { return ''; }
             }
 
             const data = {
                 teamName: teamName,
+                memberNames: teamName,
                 cityName: document.getElementById('simCityName').value.trim(),
                 paretoAnalysis: document.getElementById('simParetoAnalysis').value.trim(),
                 conclusions: document.getElementById('simConclusions').value.trim(),
@@ -3922,73 +4860,21 @@ window.toggleFaqItem = function(element) {
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', simInit);
         } else { simInit(); }
-
-        // ===== מצגת התוצאות =====
-        function presRender(items) {
-            const box = document.getElementById('presContent');
-            const countEl = document.getElementById('presCount');
-            if (!box) return;
-            countEl.innerText = items.length + ' צוותים';
-
-            if (!items.length) {
-                box.innerHTML = `<div style="text-align:center; padding:60px 20px; color:#888;">
-                    <div style="font-size:3rem;">📭</div>
-                    <p style="font-size:1.1rem; margin-top:10px;">עדיין לא התקבלו דפי עבודה. הם יופיעו כאן ברגע שצוותים ישלחו.</p></div>`;
-                return;
-            }
-
-            box.innerHTML = items.map(d => {
-                const img = (src, alt) => src ? `<img src="${src}" alt="${alt}" style="width:100%; border:1px solid #e2e8f0; border-radius:8px;">` : '<div style="color:#aaa; padding:20px; text-align:center;">אין גרף</div>';
-                return `
-                <div class="sim-card" style="margin-bottom:24px; border-top:4px solid #7c3aed;">
-                    <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px;">
-                        <h3 style="border:none; margin:0;">🚕 ${d.teamName || 'צוות'} ${d.cityName ? '— ' + d.cityName : ''}</h3>
-                        <div style="display:flex; gap:8px; flex-wrap:wrap;">
-                            <span style="background:#eef2ff; color:#3730a3; padding:4px 12px; border-radius:14px; font-size:0.85rem;">ממוצע: ${d.avg1} ← ${d.avg2} דק'</span>
-                            <span style="background:#fef2f2; color:#991b1b; padding:4px 12px; border-radius:14px; font-size:0.85rem;">חריגות: ${d.out1} ← ${d.out2}</span>
-                            <span style="background:#f0fdf4; color:#166534; padding:4px 12px; border-radius:14px; font-size:0.85rem;">נבלמו: ${d.mitigated}</span>
-                        </div>
-                    </div>
-                    <p style="margin:10px 0; font-size:0.92rem;"><strong>השקעות מנע:</strong> ${d.investments || '—'}</p>
-                    <div class="sim-grid2" style="margin-top:12px;">
-                        <div>
-                            <p style="font-weight:bold; color:var(--slate); font-size:0.9rem;">📉 בקרה סבב 1</p>
-                            ${img(d.imgControl1, 'control1')}
-                            <p style="font-weight:bold; color:var(--slate); font-size:0.9rem; margin-top:10px;">📈 פארטו סבב 1</p>
-                            ${img(d.imgPareto1, 'pareto1')}
-                        </div>
-                        <div>
-                            <p style="font-weight:bold; color:var(--slate); font-size:0.9rem;">📉 בקרה סבב 2 (אחרי שיפור)</p>
-                            ${img(d.imgControl2, 'control2')}
-                        </div>
-                    </div>
-                    <div style="margin-top:14px; background:#f8fafc; border-radius:8px; padding:12px;">
-                        <p style="font-size:0.9rem;"><strong>🔍 ניתוח פארטו:</strong> ${d.paretoAnalysis || '—'}</p>
-                        <p style="font-size:0.9rem; margin-top:8px;"><strong>🎯 מסקנות ניהוליות:</strong> ${d.conclusions || '—'}</p>
-                    </div>
-                </div>`;
-            }).join('');
-        }
-
-        window.presClear = async function() {
-            if (!confirm('לנקות את כל דפי העבודה שהתקבלו? פעולה זו בלתי הפיכה.')) return;
-            if (typeof window.qcClearWorksheets === 'function') {
-                await window.qcClearWorksheets();
-                presRender([]);
-            }
-        };
-
-        // הפעלת האזנה למצגת (ממתין שה-Firebase ייטען)
-        function presStartListener(attempt) {
-            attempt = attempt || 0;
-            if (typeof window.qcListenWorksheets === 'function') {
-                const ok = window.qcListenWorksheets(presRender);
-                if (ok) { console.log('🖥️ Presentation listener active'); return; }
-            }
-            if (attempt < 20) setTimeout(() => presStartListener(attempt + 1), 1000);
-        }
-        presStartListener();
     })();
+
+    // ניווט ב-Wizard ההנחיות
+    window.wizGo = function(step) {
+        document.querySelectorAll('.wiz-screen').forEach(s => {
+            s.classList.toggle('active', parseInt(s.dataset.screen) === step);
+        });
+        document.querySelectorAll('.wiz-step').forEach(s => {
+            const n = parseInt(s.dataset.step);
+            s.classList.toggle('active', n === step);
+            s.classList.toggle('done', n < step);
+        });
+        const top = document.getElementById('guidelines_top');
+        if (top) top.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    };
 </script>
 
 </body>
