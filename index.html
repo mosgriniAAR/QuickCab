@@ -1107,7 +1107,7 @@
                         <div class="bc-name">מערכת CRM</div>
                         <div class="budget-counter">
                             <button onclick="briefBudgetChange('crm',-5)">−</button>
-                            <input type="number" id="bbudget-crm" value="20" min="0" max="100" oninput="briefBudgetUpdate()">
+                            <input type="number" id="bbudget-crm" value="35" min="0" max="100" oninput="briefBudgetUpdate()">
                             <button onclick="briefBudgetChange('crm',5)">+</button>
                         </div>
                         <div style="font-size:0.7rem;color:#888;margin-top:4px;">חווית לקוח</div>
@@ -1117,7 +1117,7 @@
                         <div class="bc-name">הכשרת נהגים</div>
                         <div class="budget-counter">
                             <button onclick="briefBudgetChange('drivers',-5)">−</button>
-                            <input type="number" id="bbudget-drivers" value="20" min="0" max="100" oninput="briefBudgetUpdate()">
+                            <input type="number" id="bbudget-drivers" value="30" min="0" max="100" oninput="briefBudgetUpdate()">
                             <button onclick="briefBudgetChange('drivers',5)">+</button>
                         </div>
                         <div style="font-size:0.7rem;color:#888;margin-top:4px;">ממשק אנושי</div>
@@ -1127,7 +1127,7 @@
                         <div class="bc-name">אבטחת מידע</div>
                         <div class="budget-counter">
                             <button onclick="briefBudgetChange('cyber',-5)">−</button>
-                            <input type="number" id="bbudget-cyber" value="20" min="0" max="100" oninput="briefBudgetUpdate()">
+                            <input type="number" id="bbudget-cyber" value="25" min="0" max="100" oninput="briefBudgetUpdate()">
                             <button onclick="briefBudgetChange('cyber',5)">+</button>
                         </div>
                         <div style="font-size:0.7rem;color:#888;margin-top:4px;">חוסן סייבר</div>
@@ -1137,7 +1137,7 @@
                         <div class="bc-name">ISO 9001</div>
                         <div class="budget-counter">
                             <button onclick="briefBudgetChange('iso',-5)">−</button>
-                            <input type="number" id="bbudget-iso" value="20" min="0" max="100" oninput="briefBudgetUpdate()">
+                            <input type="number" id="bbudget-iso" value="25" min="0" max="100" oninput="briefBudgetUpdate()">
                             <button onclick="briefBudgetChange('iso',5)">+</button>
                         </div>
                         <div style="font-size:0.7rem;color:#888;margin-top:4px;">בקרה ושיפור</div>
@@ -1154,8 +1154,8 @@
                     </div>
                 </div>
                 <div class="briefing-budget-total">
-                    תקציב בשימוש: <span id="briefBudgetTotal" style="color:var(--dark-blue);">80</span> / 100 נק'
-                    <span id="briefBudgetWarn" style="color:var(--red-danger); display:none;"> ⚠️ חרגתם מ-100 נקודות!</span>
+                    תקציב בשימוש: <span id="briefBudgetTotal" style="color:var(--red-danger);">115</span> / 100 נק'
+                    <span id="briefBudgetWarn" style="color:var(--red-danger);"> ⚠️ חרגתם מ-100 נקודות!</span>
                     <span id="briefBudgetOk" style="color:var(--green-success); display:none;"> ✅ בדיוק 100 נקודות</span>
                 </div>
                 <div class="sim-fg" style="margin-top:16px;">
@@ -2506,7 +2506,11 @@
                     <div>תקלות שנבלמו: <span class="sim-stat-val" id="simMitigated" style="color:var(--green-success)">-</span></div>
                 </div>
                 <div class="sim-charts-container">
-                    <div><h4 style="text-align:center; color:var(--slate);">📉 תרשים בקרה (SPC) - סבב 2</h4><div class="sim-chart-box"><canvas id="simControl2"></canvas></div></div>
+                    <div>
+                        <div id="sim-round2-explain" style="display:none; background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:0.88rem; line-height:1.6;"></div>
+                        <h4 style="text-align:center; color:var(--slate);">📉 תרשים בקרה (SPC) - סבב 2</h4>
+                        <div class="sim-chart-box"><canvas id="simControl2"></canvas></div>
+                    </div>
                     <div class="sim-fg">
                         <label>מסקנות ניהוליות והסבר אסטרטגי (Act):</label>
                         <textarea id="simConclusions" rows="9" placeholder="הסבירו כיצד השפיעו השקעות המנע על יציבות התהליך וצמצום השונות..."></textarea>
@@ -2574,6 +2578,16 @@
             <div class="admin-control-grid" style="margin-bottom: 30px;">
 
                 <!-- כרטיס הגדרת כמות צוותים -->
+                <!-- כרטיס מצגת תוצאות -->
+                <div class="admin-card" style="border-top-color: #7c3aed; margin-bottom: 0; text-align:center;">
+                    <h3>🖥️ מצגת תוצאות</h3>
+                    <p style="font-size:0.9rem; color:#666; margin:10px 0 15px 0;">הצג את לוח התוצאות הכיתתי על המקרן — כולל דפי עבודה, ניקוד והשוואה בין הצוותות.</p>
+                    <button class="btn" style="background:#7c3aed; color:white; width:100%; font-size:1.05rem; padding:12px;"
+                        onclick="window.switchActiveTab && window.switchActiveTab('presentation')">
+                        🖥️ עבור למצגת תוצאות
+                    </button>
+                </div>
+
                 <div class="admin-card" style="border-top-color: var(--taxi-yellow); margin-bottom: 0;">
                     <h3>👥 הגדרת כמות צוותים כיתתית</h3>
                     <p style="font-size: 0.9rem; color: #666; margin: 10px 0 15px 0;">קבעו את כמות הצוותים הפעילים בסדנה הנוכחית. בחירה זו משפיעה ישירות על אפשרויות בחירת הקבוצות של הסטודנטים בעמדה ועל ה-HQ:</p>
@@ -2926,107 +2940,107 @@
     // ===== 🎯 שלב 0: יעדי תוכנית הבראה לכל צוות (תקציב 100 נקודות) =====
     const RECOVERY_GOALS = {
         1: [ // Customers
-            { id: 'c_crm', name: '🎯 מערכת CRM חכמה', cost: 20 },
-            { id: 'c_price', name: '💳 אופטימיזציית מחיר', cost: 15 },
-            { id: 'c_loyalty', name: '👑 תוכנית נאמנות', cost: 16 },
-            { id: 'c_app', name: '📱 שדרוג אפליקציה', cost: 18 },
-            { id: 'c_feedback', name: '💬 מערכת משוב לקוחות', cost: 10 },
-            { id: 'c_support', name: '🤝 תמיכה 24/7', cost: 22 },
-            { id: 'c_marketing', name: '📢 קמפיין שיווק', cost: 14 },
-            { id: 'c_safety', name: '✅ תוכנית בטיחות נוסעים', cost: 18 },
-            { id: 'c_insurance', name: '🛡️ ביטוח נוסעים מורחב', cost: 12 },
-            { id: 'c_quality', name: '⭐ תקן איכות שירות', cost: 11 },
-            { id: 'c_partner', name: '🤝 שותפויות עסקיות', cost: 7 }
+            { id: 'c_crm', name: '🎯 מערכת CRM חכמה', cost: 35 },
+            { id: 'c_price', name: '💳 אופטימיזציית מחיר', cost: 25 },
+            { id: 'c_loyalty', name: '👑 תוכנית נאמנות', cost: 28 },
+            { id: 'c_app', name: '📱 שדרוג אפליקציה', cost: 32 },
+            { id: 'c_feedback', name: '💬 מערכת משוב לקוחות', cost: 18 },
+            { id: 'c_support', name: '🤝 תמיכה 24/7', cost: 38 },
+            { id: 'c_marketing', name: '📢 קמפיין שיווק', cost: 22 },
+            { id: 'c_safety', name: '✅ תוכנית בטיחות נוסעים', cost: 30 },
+            { id: 'c_insurance', name: '🛡️ ביטוח נוסעים מורחב', cost: 20 },
+            { id: 'c_quality', name: '⭐ תקן איכות שירות', cost: 19 },
+            { id: 'c_partner', name: '🤝 שותפויות עסקיות', cost: 14 }
         ],
         2: [ // Drivers
-            { id: 'd_training', name: '🎓 הכשרה מקצועית', cost: 15 },
-            { id: 'd_safety', name: '🛡️ קורס בטיחות בנהיגה', cost: 20 },
-            { id: 'd_salary', name: '💰 שיפור תנאי שכר', cost: 25 },
-            { id: 'd_wellness', name: '💚 תוכנית רווחה', cost: 12 },
-            { id: 'd_recognition', name: '🌟 תוכנית הכרה והוקרה', cost: 8 },
-            { id: 'd_mentor', name: '👨‍🏫 תוכנית חונכות', cost: 10 },
-            { id: 'd_breaks', name: '☕ זמני הפסקה משופרים', cost: 5 },
-            { id: 'd_insurance', name: '🏥 ביטוח בריאות', cost: 18 },
-            { id: 'd_uniform', name: '👔 ציוד ואחידות', cost: 10 },
-            { id: 'd_events', name: '🎉 אירועי גיבוש צוות', cost: 7 },
-            { id: 'd_schedule', name: '📅 לוחות זמנים גמישים', cost: 6 }
+            { id: 'd_training', name: '🎓 הכשרה מקצועית', cost: 28 },
+            { id: 'd_safety', name: '🛡️ קורס בטיחות בנהיגה', cost: 35 },
+            { id: 'd_salary', name: '💰 שיפור תנאי שכר', cost: 42 },
+            { id: 'd_wellness', name: '💚 תוכנית רווחה', cost: 22 },
+            { id: 'd_recognition', name: '🌟 תוכנית הכרה והוקרה', cost: 16 },
+            { id: 'd_mentor', name: '👨‍🏫 תוכנית חונכות', cost: 20 },
+            { id: 'd_breaks', name: '☕ זמני הפסקה משופרים', cost: 12 },
+            { id: 'd_insurance', name: '🏥 ביטוח בריאות', cost: 32 },
+            { id: 'd_uniform', name: '👔 ציוד ואחידות', cost: 18 },
+            { id: 'd_events', name: '🎉 אירועי גיבוש צוות', cost: 14 },
+            { id: 'd_schedule', name: '📅 לוחות זמנים גמישים', cost: 11 }
         ],
         3: [ // Dispatchers
-            { id: 'p_sla', name: '⚡ אופטימיזציית SLA', cost: 20 },
-            { id: 'p_system', name: '💻 שדרוג מערכת שידור', cost: 25 },
-            { id: 'p_automation', name: '🤖 אוטומציה חכמה', cost: 22 },
-            { id: 'p_stress', name: '🧘 ניהול לחץ במוקד', cost: 15 },
-            { id: 'p_tools', name: '🔧 כלי עבודה משופרים', cost: 18 },
-            { id: 'p_training', name: '📚 הכשרת סדרנים', cost: 12 },
-            { id: 'p_comm', name: '📞 ערוצי תקשורת', cost: 10 },
-            { id: 'p_feedback', name: '💬 מערכת משוב', cost: 7 },
-            { id: 'p_incentive', name: '🎁 בונוסים', cost: 16 },
-            { id: 'p_breaks', name: '☕ זמני הפסקה', cost: 8 },
-            { id: 'p_backup', name: '🔄 גיבוי מערכת', cost: 14 }
+            { id: 'p_sla', name: '⚡ אופטימיזציית SLA', cost: 35 },
+            { id: 'p_system', name: '💻 שדרוג מערכת שידור', cost: 42 },
+            { id: 'p_automation', name: '🤖 אוטומציה חכמה', cost: 38 },
+            { id: 'p_stress', name: '🧘 ניהול לחץ במוקד', cost: 25 },
+            { id: 'p_tools', name: '🔧 כלי עבודה משופרים', cost: 30 },
+            { id: 'p_training', name: '📚 הכשרת סדרנים', cost: 22 },
+            { id: 'p_comm', name: '📞 ערוצי תקשורת', cost: 18 },
+            { id: 'p_feedback', name: '💬 מערכת משוב', cost: 14 },
+            { id: 'p_incentive', name: '🎁 בונוסים', cost: 28 },
+            { id: 'p_breaks', name: '☕ זמני הפסקה', cost: 15 },
+            { id: 'p_backup', name: '🔄 גיבוי מערכת', cost: 24 }
         ],
         4: [ // Management
-            { id: 'm_cost', name: '📉 הפחתת עלויות', cost: 20 },
-            { id: 'm_reputation', name: '🌟 ניהול מוניטין', cost: 18 },
-            { id: 'm_strategy', name: '🎯 תכנון אסטרטגי', cost: 22 },
-            { id: 'm_innovation', name: '💡 תוכנית חדשנות', cost: 20 },
-            { id: 'm_market', name: '📊 מחקר שוק', cost: 15 },
-            { id: 'm_team', name: '👥 בניית צוות ניהול', cost: 12 },
-            { id: 'm_finance', name: '💰 תכנון כלכלי', cost: 14 },
-            { id: 'm_tech', name: '💻 השקעה בטכנולוגיה', cost: 18 },
-            { id: 'm_training', name: '📚 הכשרת ניהול', cost: 11 },
-            { id: 'm_sustain', name: '🌱 קיימות', cost: 10 },
-            { id: 'm_partner', name: '🤝 שותפויות אסטרטגיות', cost: 16 }
+            { id: 'm_cost', name: '📉 הפחתת עלויות', cost: 34 },
+            { id: 'm_reputation', name: '🌟 ניהול מוניטין', cost: 30 },
+            { id: 'm_strategy', name: '🎯 תכנון אסטרטגי', cost: 38 },
+            { id: 'm_innovation', name: '💡 תוכנית חדשנות', cost: 36 },
+            { id: 'm_market', name: '📊 מחקר שוק', cost: 26 },
+            { id: 'm_team', name: '👥 בניית צוות ניהול', cost: 22 },
+            { id: 'm_finance', name: '💰 תכנון כלכלי', cost: 24 },
+            { id: 'm_tech', name: '💻 השקעה בטכנולוגיה', cost: 32 },
+            { id: 'm_training', name: '📚 הכשרת ניהול', cost: 20 },
+            { id: 'm_sustain', name: '🌱 קיימות', cost: 18 },
+            { id: 'm_partner', name: '🤝 שותפויות אסטרטגיות', cost: 28 }
         ],
         5: [ // Service & Support
-            { id: 's_training', name: '📞 הכשרת נציגי שירות', cost: 16 },
-            { id: 's_response', name: '⚡ שיפור זמן תגובה', cost: 18 },
-            { id: 's_quality', name: '✅ ביטחון איכות', cost: 20 },
-            { id: 's_tools', name: '💻 כלים לתמיכה', cost: 18 },
-            { id: 's_culture', name: '💚 תרבות שירות', cost: 14 },
-            { id: 's_incentive', name: '🎁 בונוסים לנציגים', cost: 15 },
-            { id: 's_comm', name: '📢 ערוצי תקשורת', cost: 11 },
-            { id: 's_feedback', name: '💬 משוב מלקוחות', cost: 9 },
-            { id: 's_continuous', name: '📚 הכשרה מתמשכת', cost: 13 },
-            { id: 's_recognition', name: '🌟 הוקרת עובדים', cost: 7 },
-            { id: 's_workspace', name: '🏢 שיפור סביבת עבודה', cost: 10 }
+            { id: 's_training', name: '📞 הכשרת נציגי שירות', cost: 28 },
+            { id: 's_response', name: '⚡ שיפור זמן תגובה', cost: 32 },
+            { id: 's_quality', name: '✅ ביטחון איכות', cost: 36 },
+            { id: 's_tools', name: '💻 כלים לתמיכה', cost: 30 },
+            { id: 's_culture', name: '💚 תרבות שירות', cost: 24 },
+            { id: 's_incentive', name: '🎁 בונוסים לנציגים', cost: 26 },
+            { id: 's_comm', name: '📢 ערוצי תקשורת', cost: 19 },
+            { id: 's_feedback', name: '💬 משוב מלקוחות', cost: 16 },
+            { id: 's_continuous', name: '📚 הכשרה מתמשכת', cost: 22 },
+            { id: 's_recognition', name: '🌟 הוקרת עובדים', cost: 14 },
+            { id: 's_workspace', name: '🏢 שיפור סביבת עבודה', cost: 18 }
         ],
         6: [ // Maintenance
-            { id: 'x_preventive', name: '🔧 תחזוקה מונעת', cost: 20 },
-            { id: 'x_safety', name: '⚠️ בדיקות בטיחות', cost: 18 },
-            { id: 'x_upgrade', name: '🛠️ שדרוג כלים וציוד', cost: 25 },
-            { id: 'x_training', name: '📚 הכשרה טכנית', cost: 16 },
-            { id: 'x_audit', name: '📋 ביקורת מערכות', cost: 12 },
-            { id: 'x_docs', name: '📄 תיעוד תקין', cost: 8 },
-            { id: 'x_parts', name: '⚙️ מלאי חלקי חילוף', cost: 14 },
-            { id: 'x_software', name: '💻 תוכנת ניהול תחזוקה', cost: 17 },
-            { id: 'x_clean', name: '🧹 ניקיון ואחסון', cost: 6 },
-            { id: 'x_5s', name: '🏭 סדר מקום עבודה (5S)', cost: 10 },
-            { id: 'x_ppe', name: '🦺 ציוד הגנה אישי', cost: 9 }
+            { id: 'x_preventive', name: '🔧 תחזוקה מונעת', cost: 36 },
+            { id: 'x_safety', name: '⚠️ בדיקות בטיחות', cost: 32 },
+            { id: 'x_upgrade', name: '🛠️ שדרוג כלים וציוד', cost: 42 },
+            { id: 'x_training', name: '📚 הכשרה טכנית', cost: 28 },
+            { id: 'x_audit', name: '📋 ביקורת מערכות', cost: 22 },
+            { id: 'x_docs', name: '📄 תיעוד תקין', cost: 15 },
+            { id: 'x_parts', name: '⚙️ מלאי חלקי חילוף', cost: 26 },
+            { id: 'x_software', name: '💻 תוכנת ניהול תחזוקה', cost: 30 },
+            { id: 'x_clean', name: '🧹 ניקיון ואחסון', cost: 12 },
+            { id: 'x_5s', name: '🏭 סדר מקום עבודה (5S)', cost: 18 },
+            { id: 'x_ppe', name: '🦺 ציוד הגנה אישי', cost: 16 }
         ],
         7: [ // Finance
-            { id: 'f_budget', name: '💰 ניהול תקציבים', cost: 20 },
-            { id: 'f_audit', name: '📋 ביקורת פיננסית', cost: 16 },
-            { id: 'f_software', name: '💻 מערכת ERP', cost: 22 },
-            { id: 'f_forecast', name: '📊 תחזיות פיננסיות', cost: 18 },
-            { id: 'f_cost', name: '📉 צמצום עלויות', cost: 15 },
-            { id: 'f_invest', name: '📈 ניהול השקעות', cost: 17 },
-            { id: 'f_risk', name: '⚠️ ניהול סיכונים', cost: 14 },
-            { id: 'f_training', name: '📚 הכשרת כספים', cost: 11 },
-            { id: 'f_report', name: '📄 דיווח שקוף', cost: 9 },
-            { id: 'f_tax', name: '🏛️ אופטימיזציית מס', cost: 12 },
-            { id: 'f_cashflow', name: '💵 ניהול תזרים מזומנים', cost: 13 }
+            { id: 'f_budget', name: '💰 ניהול תקציבים', cost: 34 },
+            { id: 'f_audit', name: '📋 ביקורת פיננסית', cost: 28 },
+            { id: 'f_software', name: '💻 מערכת ERP', cost: 38 },
+            { id: 'f_forecast', name: '📊 תחזיות פיננסיות', cost: 32 },
+            { id: 'f_cost', name: '📉 צמצום עלויות', cost: 26 },
+            { id: 'f_invest', name: '📈 ניהול השקעות', cost: 30 },
+            { id: 'f_risk', name: '⚠️ ניהול סיכונים', cost: 24 },
+            { id: 'f_training', name: '📚 הכשרת כספים', cost: 20 },
+            { id: 'f_report', name: '📄 דיווח שקוף', cost: 16 },
+            { id: 'f_tax', name: '🏛️ אופטימיזציית מס', cost: 22 },
+            { id: 'f_cashflow', name: '💵 ניהול תזרים מזומנים', cost: 24 }
         ],
         8: [ // Safety & Compliance
-            { id: 'z_cyber', name: '🛡️ אבטחת סייבר', cost: 25 },
-            { id: 'z_firewall', name: '🔥 חומת אש מתקדמת', cost: 20 },
-            { id: 'z_audit', name: '📋 ביקורת אבטחה', cost: 16 },
-            { id: 'z_training', name: '📚 הדרכת מודעות סייבר', cost: 12 },
-            { id: 'z_backup', name: '🔄 גיבוי מידע', cost: 14 },
-            { id: 'z_encrypt', name: '🔐 הצפנת נתונים', cost: 18 },
-            { id: 'z_iso', name: '✅ תקן ISO 27001', cost: 17 },
-            { id: 'z_monitor', name: '📡 ניטור 24/7', cost: 15 },
-            { id: 'z_incident', name: '🚨 צוות תגובה לאירועים', cost: 13 },
-            { id: 'z_policy', name: '📄 מדיניות אבטחה', cost: 8 },
+            { id: 'z_cyber', name: '🛡️ אבטחת סייבר', cost: 42 },
+            { id: 'z_firewall', name: '🔥 חומת אש מתקדמת', cost: 36 },
+            { id: 'z_audit', name: '📋 ביקורת אבטחה', cost: 28 },
+            { id: 'z_training', name: '📚 הדרכת מודעות סייבר', cost: 22 },
+            { id: 'z_backup', name: '🔄 גיבוי מידע', cost: 26 },
+            { id: 'z_encrypt', name: '🔐 הצפנת נתונים', cost: 32 },
+            { id: 'z_iso', name: '✅ תקן ISO 27001', cost: 30 },
+            { id: 'z_monitor', name: '📡 ניטור 24/7', cost: 28 },
+            { id: 'z_incident', name: '🚨 צוות תגובה לאירועים', cost: 24 },
+            { id: 'z_policy', name: '📄 מדיניות אבטחה', cost: 15 },
             { id: 'z_access', name: '🔑 בקרת גישה', cost: 10 }
         ]
     };
@@ -5511,6 +5525,7 @@ window.toggleFaqItem = function(element) {
         const simSelected = new Set();
         let simCharts = {};
         let simResults = { avg1:0, out1:0, avg2:0, out2:0, mitigated:0 };
+        let simRound1Incidents = null; // שמירת אירועי סבב 1 לשימוש בסבב 2
 
         function simInit() {
             const c = document.getElementById('sim-investments-list');
@@ -5539,27 +5554,93 @@ window.toggleFaqItem = function(element) {
 
         window.simRun = function(round) {
             if (typeof Chart === 'undefined') { alert('ספריית הגרפים עדיין נטענת — נסו שוב בעוד רגע.'); return; }
-            let labels = [], waits = [];
+
+            // ── בנה מפת השקעות יעילות: מ-simSelected + recoverySelectedGoals ──
+            // מיפוי recoverySelectedGoals לפי שם ← simOpts
+            const recoveryMap = {};
+            if (typeof recoverySelectedGoals !== 'undefined') {
+                recoverySelectedGoals.forEach(g => {
+                    const match = simOpts.find(o =>
+                        o.name.includes(g.name.split(' ')[0]) ||
+                        g.name.includes(o.name.split(' ')[0])
+                    );
+                    if (match) recoveryMap[match.id] = (g.cost / 100); // משקל פרופורציונלי
+                });
+            }
+
+            // ── מפה אחידה של כל ההשקעות הפעילות ──
+            const activeInvest = new Map();
+            simOpts.forEach(opt => {
+                let weight = 0;
+                if (simSelected.has(opt.id)) weight = 1.0;          // בחירה ישירה בסימולטור
+                if (recoveryMap[opt.id])      weight = Math.max(weight, recoveryMap[opt.id]); // מ-שלב 0
+                if (weight > 0) activeInvest.set(opt.id, weight);
+            });
+
+            let labels = [], waits = [], incidentLog = [];
             let incidents = { 'פקק תנועה':0, 'תקלת קשר/אפליקציה':0, 'איחור נהג':0, 'נוסע לא הופיע':0, 'מזג אוויר חריג':0 };
             let mitigated = 0, t = 0;
 
-            for (let i = 1; i <= 30; i++) {
-                t += Math.floor(Math.random()*3)+1;
-                labels.push("דק' " + t);
-                let wait = Math.random()*7 + 5;
-                if (Math.random() < 0.45) {
-                    const risks = Object.keys(incidents);
-                    const r = risks[Math.floor(Math.random()*risks.length)];
-                    incidents[r]++;
-                    const match = simOpts.find(o => o.risk === r);
-                    if (round === 2 && match && simSelected.has(match.id)) {
-                        wait += Math.max(1, (Math.random()*12+4) - match.reduction);
-                        mitigated++;
-                    } else {
-                        wait += (Math.random()*22+10);
+            // ── סבב 1: צור אירועים ושמור אותם ──
+            if (round === 1) {
+                simRound1Incidents = [];
+                for (let i = 1; i <= 30; i++) {
+                    t += Math.floor(Math.random()*3)+1;
+                    labels.push("דק' " + t);
+                    let wait = Math.random()*5 + 8; // בסיס: 8-13 דק'
+                    let incident = null;
+                    if (Math.random() < 0.5) {
+                        const risks = Object.keys(incidents);
+                        const r = risks[Math.floor(Math.random()*risks.length)];
+                        incidents[r]++;
+                        wait += (Math.random()*18 + 10); // תקלה: +10 עד +28 דק'
+                        incident = r;
                     }
+                    simRound1Incidents.push({ label:"דק' "+t, wait: parseFloat(wait.toFixed(2)), incident });
+                    waits.push(parseFloat(wait.toFixed(2)));
                 }
-                waits.push(parseFloat(wait.toFixed(2)));
+                incidentLog = simRound1Incidents;
+
+            // ── סבב 2: אותם אירועים בדיוק — עם השפעת ההשקעות ──
+            } else {
+                if (!simRound1Incidents || simRound1Incidents.length === 0) {
+                    alert('אנא הריצו תחילה את סיבוב 1!'); return;
+                }
+                const mitigatedTypes = [];
+                simRound1Incidents.forEach(ev => {
+                    labels.push(ev.label);
+                    let wait = ev.wait;
+                    if (ev.incident) {
+                        incidents[ev.incident]++;
+                        const opt = simOpts.find(o => o.risk === ev.incident);
+                        const weight = opt ? (activeInvest.get(opt.id) || 0) : 0;
+                        if (weight > 0) {
+                            // הפחתה פרופורציונלית: weight=1 → reduction מלא, weight=0.4 → 40%
+                            const reduction = opt.reduction * weight;
+                            wait = Math.max(8, wait - reduction - Math.random()*3);
+                            mitigated++;
+                            mitigatedTypes.push(opt.risk);
+                        }
+                    }
+                    waits.push(parseFloat(wait.toFixed(2)));
+                });
+
+                // ── הסבר אוטומטי ──
+                const explEl = document.getElementById('sim-round2-explain');
+                if (explEl) {
+                    if (activeInvest.size === 0) {
+                        explEl.innerHTML = '<span style="color:#dc2626;">⚠️ לא נבחרו השקעות — סבב 2 זהה לסבב 1.</span>';
+                    } else {
+                        const investNames = Array.from(activeInvest.keys())
+                            .map(id => simOpts.find(o=>o.id===id)?.name).filter(Boolean);
+                        const uniqueMit = [...new Set(mitigatedTypes)];
+                        explEl.innerHTML =
+                            `<strong style="color:#166534;">✅ ${mitigated} מתוך ${simRound1Incidents.filter(e=>e.incident).length} תקריות נבלמו</strong>
+                             בזכות: <em>${investNames.join(', ')}</em>.<br>
+                             סוגי תקריות שטופלו: <strong>${uniqueMit.length > 0 ? uniqueMit.join(', ') : '—'}</strong>.`;
+                    }
+                    explEl.style.display = 'block';
+                }
             }
 
             const avg = waits.reduce((a,b)=>a+b,0)/waits.length;
@@ -5768,34 +5849,31 @@ window.toggleFaqItem = function(element) {
     };
 
     function unlockTeacherMenu() {
-
         if (teacherUnlocked) {
-            const menu = document.getElementById("teacherMenu");
-
-            menu.style.display =
-                menu.style.display === "block"
-                    ? "none"
-                    : "block";
-
+            // כבר מחובר — עבור ישירות לפאנל הניהול
+            window.switchActiveTab && window.switchActiveTab('admin_control');
             return;
         }
 
-        const password =
-            prompt("הזן סיסמת מרצה");
+        const password = prompt("הזן סיסמת מרצה");
 
         if (password === "1234") {
-
             teacherUnlocked = true;
 
-            document.getElementById("teacherMenu")
-                .style.display = "block";
+            // החלף את הכפתור לכפתור "פאנל ניהול" ישיר — ללא dropdown
+            const container = document.getElementById("teacherMenuContainer");
+            if (container) {
+                container.innerHTML = `
+                    <button class="btn btn-danger" onclick="window.switchActiveTab && window.switchActiveTab('admin_control')" style="display:flex;align-items:center;gap:6px;">
+                        🛠️ פאנל ניהול
+                    </button>`;
+            }
 
-            alert("✅ גישה אושרה — תפריט המרצה נפתח בהצלחה");
+            // עבור אוטומטית לפאנל הניהול
+            setTimeout(() => window.switchActiveTab && window.switchActiveTab('admin_control'), 100);
 
         } else {
-
             alert("❌ גישה נדחתה — סיסמה שגויה");
-
         }
     }
 </script>
